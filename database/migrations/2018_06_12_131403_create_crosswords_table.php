@@ -15,8 +15,11 @@ class CreateCrosswordsTable extends Migration
     {
         Schema::create('crosswords', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title',255)->commit('标题');
-            $table->string('description',255)->commit('描述');
+            $table->tinyInteger('is_h')->comment('1横0竖');
+            $table->string('seq',15)->comment('横竖序号');
+            $table->string('word',255)->commit('标题');
+            $table->string('tip',255)->commit('描述');
+            $table->string('cell_ids',255)->commit('方块ids');
             $table->timestamps();
         });
     }
