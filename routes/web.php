@@ -20,3 +20,4 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::Resource('crosswords','Frontend\CrosswordsController');
+Route::post('crosswords/check','Frontend\CrosswordsController@check')->name('crosswords.check');

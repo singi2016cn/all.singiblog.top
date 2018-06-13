@@ -56,6 +56,10 @@
                     </div>
                 </div>
             </div>
+        <hr>
+        <div class="row text-center">
+            <div class="btn btn-primary" @click="sub()">提交</div>
+        </div>
     </div>
 @endsection
 @section('script')
@@ -130,6 +134,7 @@
                                             $('#'+v).val(word[i]);
                                         })
                                     }
+                                    v.word = word;
                                 }
                             })
                         }
@@ -144,12 +149,43 @@
                                     word += $('#'+v).val();
                                 });
                                 $('#word'+v.id).val(word);
+                                v.word = word;
                             }
                         })
                     }
                 },
+                'sub':function(){
+                    console.log(this.words);
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: "POST",
+                        url: '{{ route('crosswords.check') }}',
+                        data: {words:this.words},
+                        success: function(res){
+                            console.log(res);
+                        },
+                        dataType: 'json'
+                    });
+                }
             }
         })
+
+        function sub(){
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: '{{ route('crosswords.check') }}',
+                data: {words:this.words},
+                success: function(res){
+                    console.log(res);
+                },
+                dataType: 'json'
+            });
+        }
     </script>
 @endsection
 

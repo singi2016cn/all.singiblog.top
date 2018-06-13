@@ -83,4 +83,13 @@ class CrosswordsController extends Controller
     {
         //
     }
+
+    /**
+     * 提交填字表单，获取成绩
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function check(Request $request){
+        return response()->json($request->all());
+    }
 }
