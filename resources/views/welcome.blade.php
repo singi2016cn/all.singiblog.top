@@ -83,7 +83,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="{{ route('home') }}">开启新世界的大门</a>
+                    <a href="{{ route('market.index') }}">开启新世界的大门</a>
                 </div>
             </div>
         </div>
