@@ -4,6 +4,14 @@
 <div class="container">
     <div class="row">
             <div class="col-md-12">
+
+                @if (session('status'))
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        {{ session('status') }}
+                    </div>
+                @endif
+
                 <div class="panel panel-default">
                     <div class="panel-heading">创建填字游戏</div>
 
@@ -12,6 +20,15 @@
                             {{ csrf_field() }}
                             <div class="row">
                                 <div class="col-sm-7">
+                                    <div class="form-group">
+                                        <label for="word">第xx号</label>
+                                        <select class="form-control" name="crosswords_counts_id" id="crosswords_counts_id">
+                                            @foreach($crosswords_counts as $crosswords_count)
+                                                <option value="{{ $crosswords_count->id }}">第{{ $crosswords_count->id }}号</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
                                     <div class="form-group">
                                         <label for="word">答案</label>
                                         <input type="text" class="form-control" id="word" name="word" placeholder="答案">

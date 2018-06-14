@@ -20,6 +20,7 @@ class CreateCrosswordsTable extends Migration
             $table->string('word',255)->commit('标题');
             $table->string('tip',255)->commit('描述');
             $table->string('cell_ids',255)->commit('方块ids');
+            $table->unsignedInteger('crosswords_counts_id')->comment('号数id');
             $table->timestamps();
         });
     }

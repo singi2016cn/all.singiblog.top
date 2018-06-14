@@ -37,6 +37,7 @@
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav">
+                        <li><a href="{{route('market.index')}}">广场</a></li>
                         <li><a href="{{route('crosswords.index')}}">填字游戏</a></li>
                     </ul>
 

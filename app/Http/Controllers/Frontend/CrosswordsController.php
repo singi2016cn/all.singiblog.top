@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Model\Crosswords;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Model\Crosswords;
+use App\Model\CrosswordsCounts;
 
 class CrosswordsController extends Controller
 {
@@ -15,7 +16,7 @@ class CrosswordsController extends Controller
      */
     public function index()
     {
-        return view('frontend/crosswords/index');
+        return view('frontend/crosswords/index',['crosswords_counts'=>CrosswordsCounts::paginate(10)]);
     }
 
     /**
@@ -47,7 +48,25 @@ class CrosswordsController extends Controller
      */
     public function show($id)
     {
-        return view('frontend/crosswords/show');
+        $crosswords_counts = CrosswordsCounts::findOrFail($id);
+        $crosswords = Crosswords::where('crosswords_counts_id',$id)->get()->toArray();
+        $cell_exist_ids = [];
+        $cell0_exist_ids = [];
+        if ($crosswords){
+            foreach($crosswords as &$crossword){
+                if ($crossword['cell_ids']){
+                    $cell_ids_arr = explode(',',$crossword['cell_ids']);
+                    $cell0_ids_arr = [$cell_ids_arr[0]];
+                    $crossword['cell_ids'] = $cell_ids_arr;
+                    $cell_exist_ids = array_merge($cell_exist_ids,$cell_ids_arr);
+                    $cell0_exist_ids = array_merge($cell0_exist_ids,$cell0_ids_arr);
+                }
+            }
+            unset($crossword);
+        }
+        $cell_exist_ids = array_unique($cell_exist_ids);
+        $cell0_exist_ids = ($cell0_exist_ids);
+        return view('frontend/crosswords/show',['crosswords_counts'=>$crosswords_counts,'crosswords'=>json_encode($crosswords),'cell_exist_ids'=>$cell_exist_ids,'cell0_exist_ids'=>$cell0_exist_ids]);
     }
 
     /**

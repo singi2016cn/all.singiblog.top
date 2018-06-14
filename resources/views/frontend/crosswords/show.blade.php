@@ -25,22 +25,26 @@
                 <div class="row">
                     <div class="col-md-3">
                         <div class="row">
-                            <div class="panel panel-default" v-for="word in words" v-if="word.is_h === true" :id="'panel'+word.id">
-                                <div class="panel-heading">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">@{{ word.seq }}</span>
-                                        <input @click="focus_panel(word.id)" @blur="focus_out" @change="fill_cell(word.id)" type="text" :name="'word'+word.id" :id="'word'+word.id" class="form-control" :maxlength="word.cell_ids.length" placeholder="">
+                            @foreach(json_decode($crosswords,true) as $crossword)
+                                @if($crossword['is_h'] == 1)
+                                    <div class="panel panel-default"  id="panel{{ $crossword['id'] }}">
+                                        <div class="panel-heading">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">{{ $crossword['seq'] }}</span>
+                                                <input @click="focus_panel({{ $crossword['id'] }})" @blur="focus_out" @change="fill_cell({{ $crossword['id'] }})" type="text" name="word{{ $crossword['id'] }}" id="word{{ $crossword['id'] }}" class="form-control" maxlength="{{ count($crossword['cell_ids']) }}" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            {{ $crossword['tip'] }}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="panel-body">
-                                    @{{ word.tip }}
-                                </div>
-                            </div>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="panel panel-default">
-                            <div class="panel-heading">龙争虎斗</div>
+                            <div class="panel-heading">{{ $crosswords_counts->des }}</div>
                             <table class="table table-bordered">
                                 <tr v-for="n in ns">
                                     <td v-for="m in 10" class="pst" :class="{'bg-black':!cell_exist_ids.includes(m+n)}">
@@ -53,17 +57,21 @@
                     </div>
                     <div class="col-md-3">
                         <div class="row">
-                            <div class="panel panel-default" v-for="word in words" v-if="word.is_h === false" :id="'panel'+word.id">
-                                <div class="panel-heading">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">@{{ word.seq }}</span>
-                                        <input @click="focus_panel(word.id)" @blur="focus_out" @change="fill_cell(word.id)" type="text" :name="'word'+word.id" :id="'word'+word.id" class="form-control" :maxlength="word.cell_ids.length" placeholder="">
+                            @foreach(json_decode($crosswords,true) as $crossword)
+                                @if($crossword['is_h'] == 0)
+                                    <div class="panel panel-default"  id="panel{{ $crossword['id'] }}">
+                                        <div class="panel-heading">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">{{ $crossword['seq'] }}</span>
+                                                <input @click="focus_panel({{ $crossword['id'] }})" @blur="focus_out" @change="fill_cell({{ $crossword['id'] }})" type="text" name="word{{ $crossword['id'] }}" id="word{{ $crossword['id'] }}" class="form-control" maxlength="{{ count($crossword['cell_ids']) }}" placeholder="">
+                                            </div>
+                                        </div>
+                                        <div class="panel-body">
+                                            {{ $crossword['tip'] }}
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="panel-body">
-                                    @{{ word.tip }}
-                                </div>
-                            </div>
+                                @endif
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -80,29 +88,17 @@
             el: '#app',
             data: {
                 'ns':[0,10,20,30,40,50,60,70,80,90],
-                'cell_exist_ids':[2,3,13],//所有有值的单元格
-                'cell0_exist_ids':[2,3],//所有有值单元格的第1个
-                'words':[{
-                    'id':1,
-                    'is_h':true,
-                    'tip':'你好',
-                    'seq':'1',
-                    'cell_ids':[2,3]
-                },{
-                    'id':2,
-                    'is_h':false,
-                    'tip':'你好',
-                    'seq':'一',
-                    'cell_ids':[3,13]
-                }],
+                'cell_exist_ids':[{!! implode(',',$cell_exist_ids) !!}],//所有有值的单元格
+                'cell0_exist_ids':[{!! implode(',',$cell0_exist_ids) !!}],//所有有值单元格的第1个
+                'words':{!! $crosswords !!},
             },
             methods: {
                 'focus_cell': function (id) {
                     if (this.words && id>0){
                         this.words.forEach(function(v){
-                            if (v.cell_ids.includes(id)){
+                            if (v.cell_ids.includes(id+'')){
                                 var cls = 'info';
-                                if (v.is_h === true) cls = 'success';
+                                if (v.is_h == true) cls = 'success';
                                 if (v.cell_ids){
                                     v.cell_ids.forEach(function(v){
                                         $('#'+v).parent().addClass(cls);
@@ -116,7 +112,7 @@
                 },
 
                 'focus_out': function () {
-                    $('td').removeClass();
+                    $('td').removeClass('success info warning');
                     $('div.panel').removeClass('panel-success panel-info');
                 },
                 'focus_panel': function (id) {
@@ -156,7 +152,7 @@
                 'set_panel_input':function(id){
                     if (this.words && id>0){
                         this.words.forEach(function(v){
-                            if (v.cell_ids.includes(id)){
+                            if (v.cell_ids.includes(id+'')){
                                 var word = '';
                                 v.cell_ids.forEach(function(v){
                                     word += $('#'+v).val();
@@ -184,21 +180,6 @@
                 }
             }
         })
-
-        function sub(){
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: "POST",
-                url: '{{ route('crosswords.check') }}',
-                data: {words:this.words},
-                success: function(res){
-                    console.log(res);
-                },
-                dataType: 'json'
-            });
-        }
     </script>
 @endsection
 

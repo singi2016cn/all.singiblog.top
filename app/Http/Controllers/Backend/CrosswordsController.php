@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Model\Crosswords;
+use App\Model\CrosswordsCounts;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -24,7 +26,8 @@ class CrosswordsController extends Controller
      */
     public function create()
     {
-        return view('backend/crosswords/create',['ns'=>[0,10,20,30,40,50,60,70,80,90]]);
+        $crosswords_counts = CrosswordsCounts::orderBy('id','desc')->get();
+        return view('backend/crosswords/create',['ns'=>[0,10,20,30,40,50,60,70,80,90],'crosswords_counts'=>$crosswords_counts]);
     }
 
     /**
@@ -35,7 +38,10 @@ class CrosswordsController extends Controller
      */
     public function store(Request $request)
     {
-        dump($request->all());
+        $crosswords = $request->except('_token');
+        $crosswords['cell_ids'] = implode(',',$crosswords['cell_ids']);
+        Crosswords::insert($crosswords);
+        return back()->with('status', 'create success');
     }
 
     /**

@@ -21,8 +21,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::Resource('crosswords','Frontend\CrosswordsController');
 Route::post('crosswords/check','Frontend\CrosswordsController@check')->name('crosswords.check');
-
-
 Route::prefix('backend')->name('backend.')->group(function () {
     Route::Resource('crosswords','Backend\CrosswordsController');
 });

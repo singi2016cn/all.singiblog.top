@@ -4,7 +4,7 @@ namespace App\Model;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Crosswords extends Model
+class CrosswordsCounts extends Model
 {
     protected $fillable = [];
 }
