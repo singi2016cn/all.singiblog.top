@@ -5,6 +5,17 @@
         td {
             width: 50px;
         }
+        .pst{
+            position:relative;
+        }
+        .pst-span {
+            position: absolute;
+            top: -5px;
+            left: 0;
+        }
+        .bg-black{
+            background-color: gray;
+        }
     </style>
 @endsection
 
@@ -32,7 +43,8 @@
                             <div class="panel-heading">龙争虎斗</div>
                             <table class="table table-bordered">
                                 <tr v-for="n in ns">
-                                    <td v-for="m in 10">
+                                    <td v-for="m in 10" class="pst" :class="{'bg-black':!cell_exist_ids.includes(m+n)}">
+                                        <span class="pst-span" v-if="cell0_exist_ids.includes(m+n)">@{{words[cell0_exist_ids.indexOf(m+n)].seq}}</span>
                                         <input v-if="cell_exist_ids.includes(m+n)" @click="focus_cell(m+n)" @blur="focus_out()" @change="set_panel_input(m+n)" type="text" :name="m+n" :id="m+n" class="form-control" minlength="1" maxlength="1">
                                     </td>
                                 </tr>
@@ -68,7 +80,8 @@
             el: '#app',
             data: {
                 'ns':[0,10,20,30,40,50,60,70,80,90],
-                'cell_exist_ids':[2,3,13],
+                'cell_exist_ids':[2,3,13],//所有有值的单元格
+                'cell0_exist_ids':[2,3],//所有有值单元格的第1个
                 'words':[{
                     'id':1,
                     'is_h':true,
@@ -81,7 +94,7 @@
                     'tip':'你好',
                     'seq':'一',
                     'cell_ids':[3,13]
-                }]
+                }],
             },
             methods: {
                 'focus_cell': function (id) {
