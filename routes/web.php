@@ -26,3 +26,6 @@ Route::prefix('backend')->name('backend.')->group(function () {
 });
 
 Route::Resource('market','Frontend\MarketController');
+
+
+Route::post('crosswords/get_crosswords','Api\CrosswordsController@get_crosswords')->name('api.crosswords.get_crosswords');

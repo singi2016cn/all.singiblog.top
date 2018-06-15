@@ -13,6 +13,11 @@
             top: -5px;
             left: 0;
         }
+        .pst-span-b {
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+        }
         .bg-black{
             background-color: gray;
         }
@@ -43,12 +48,13 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="panel panel-default">
+                        <div class="panel panel-default panel-primary">
                             <div class="panel-heading">{{ $crosswords_counts->des }}</div>
                             <table class="table table-bordered">
                                 <tr v-for="n in ns">
                                     <td v-for="m in 10" class="pst" :class="{'bg-black':!cell_exist_ids.includes(m+n)}">
-                                        <span class="pst-span" v-if="cell0_exist_ids.includes(m+n)">@{{words[cell0_exist_ids.indexOf(m+n)].seq}}</span>
+                                        <span class="pst-span text-primary" v-if="cell0_exist_ids.includes(m+n)">@{{words_v[cell0_exist_ids.indexOf(m+n)].seq}}</span>
+                                        <span class="pst-span-b text-danger" v-if="cell_b_exist_ids.includes(m+n)">@{{words_h[cell_b_exist_ids.indexOf(m+n)].seq}}</span>
                                         <input v-if="cell_exist_ids.includes(m+n)" @click="focus_cell(m+n)" @blur="focus_out()" @change="set_panel_input(m+n)" type="text" :name="m+n" :id="m+n" class="form-control" minlength="1" maxlength="1">
                                     </td>
                                 </tr>
@@ -90,7 +96,10 @@
                 'ns':[0,10,20,30,40,50,60,70,80,90],
                 'cell_exist_ids':[{!! implode(',',$cell_exist_ids) !!}],//所有有值的单元格
                 'cell0_exist_ids':[{!! implode(',',$cell0_exist_ids) !!}],//所有有值单元格的第1个
+                'cell_b_exist_ids':[{!! implode(',',$cell_b_exist_ids) !!}],//所有有值单元格的第1个
                 'words':{!! $crosswords !!},
+                'words_h':{!! $crosswords_h !!},
+                'words_v':{!! $crosswords_v !!},
             },
             methods: {
                 'focus_cell': function (id) {
@@ -120,7 +129,7 @@
                         this.words.forEach(function(v){
                             if (v.id === id){
                                 var cls = 'info';
-                                if (v.is_h === true) cls = 'success';
+                                if (v.is_h == true) cls = 'success';
                                 if (v.cell_ids){
                                     v.cell_ids.forEach(function(v){
                                         $('#'+v).parent().addClass(cls);

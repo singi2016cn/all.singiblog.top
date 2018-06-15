@@ -51,22 +51,32 @@ class CrosswordsController extends Controller
         $crosswords_counts = CrosswordsCounts::findOrFail($id);
         $crosswords = Crosswords::where('crosswords_counts_id',$id)->get()->toArray();
         $cell_exist_ids = [];
+        $cell_b_exist_ids = [];
         $cell0_exist_ids = [];
+        $crosswords_h = [];
+        $crosswords_v = [];
         if ($crosswords){
             foreach($crosswords as &$crossword){
                 if ($crossword['cell_ids']){
                     $cell_ids_arr = explode(',',$crossword['cell_ids']);
-                    $cell0_ids_arr = [$cell_ids_arr[0]];
                     $crossword['cell_ids'] = $cell_ids_arr;
                     $cell_exist_ids = array_merge($cell_exist_ids,$cell_ids_arr);
-                    $cell0_exist_ids = array_merge($cell0_exist_ids,$cell0_ids_arr);
+
+                    if ($crossword['is_h'] == 1){
+                        $cell_b_ids_arr = [$cell_ids_arr[0]];
+                        $cell_b_exist_ids = array_merge($cell_b_exist_ids,$cell_b_ids_arr);
+                        $crosswords_h[] = $crossword;
+                    }else{
+                        $cell0_ids_arr = [$cell_ids_arr[0]];
+                        $cell0_exist_ids = array_merge($cell0_exist_ids,$cell0_ids_arr);
+                        $crosswords_v[] = $crossword;
+                    }
                 }
             }
             unset($crossword);
         }
         $cell_exist_ids = array_unique($cell_exist_ids);
-        $cell0_exist_ids = ($cell0_exist_ids);
-        return view('frontend/crosswords/show',['crosswords_counts'=>$crosswords_counts,'crosswords'=>json_encode($crosswords),'cell_exist_ids'=>$cell_exist_ids,'cell0_exist_ids'=>$cell0_exist_ids]);
+        return view('frontend/crosswords/show',['crosswords_counts'=>$crosswords_counts,'crosswords'=>json_encode($crosswords),'crosswords_v'=>json_encode($crosswords_v),'crosswords_h'=>json_encode($crosswords_h),'cell_exist_ids'=>$cell_exist_ids,'cell0_exist_ids'=>$cell0_exist_ids,'cell_b_exist_ids'=>$cell_b_exist_ids]);
     }
 
     /**
