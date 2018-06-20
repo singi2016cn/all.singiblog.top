@@ -19,7 +19,10 @@
             left: 0;
         }
         .bg-black{
-            background-color: gray;
+            background-color: lightgray;
+        }
+        .large-font{
+            font-size: 3em;
         }
     </style>
 @endsection
@@ -48,7 +51,7 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="panel panel-default panel-primary">
+                        <div class="panel panel-default panel-default">
                             <div class="panel-heading">{{ $crosswords_counts->des }}</div>
                             <table class="table table-bordered">
                                 <tr v-for="n in ns">
@@ -59,6 +62,10 @@
                                     </td>
                                 </tr>
                             </table>
+                        </div>
+                        <div class="panel panel-default panel-default" v-if="seen">
+                            <div class="panel-heading">得分</div>
+                            <div class="panel-body text-center text-success large-font">@{{ crosswords_score }}</div>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -93,6 +100,8 @@
         var app = new Vue({
             el: '#app',
             data: {
+                'seen':false,
+                'crosswords_score':0,
                 'ns':[0,10,20,30,40,50,60,70,80,90],
                 'cell_exist_ids':[{!! implode(',',$cell_exist_ids) !!}],//所有有值的单元格
                 'cell0_exist_ids':[{!! implode(',',$cell0_exist_ids) !!}],//所有有值单元格的第1个
@@ -183,6 +192,10 @@
                         data: {words:this.words},
                         success: function(res){
                             console.log(res);
+                            if (res.status === 200){
+                                app.seen = true;
+                                app.crosswords_score = res.data;
+                            }
                         },
                         dataType: 'json'
                     });

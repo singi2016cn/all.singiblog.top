@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Frontend;
 
 use App\Model\Crosswords;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\CrosswordsCounts;
+use Illuminate\Support\Facades\Auth;
 
 class CrosswordsController extends Controller
 {
@@ -57,6 +59,7 @@ class CrosswordsController extends Controller
         $crosswords_v = [];
         if ($crosswords){
             foreach($crosswords as &$crossword){
+                $crossword['word'] = '';
                 if ($crossword['cell_ids']){
                     $cell_ids_arr = explode(',',$crossword['cell_ids']);
                     $crossword['cell_ids'] = $cell_ids_arr;
@@ -119,6 +122,23 @@ class CrosswordsController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
     public function check(Request $request){
-        return response()->json($request->all());
+        $request_data = $request->all();
+        $crosswords_score = 0;
+        if ($request_data['words']){
+            foreach($request_data['words'] as $val){
+                if ($val['word']){
+                    $crosswords = Crosswords::where('id',$val['id'])
+                        ->where('crosswords_counts_id',$val['crosswords_counts_id'])
+                        ->where('word',$val['word'])
+                        ->first();
+                    if ($crosswords) $crosswords_score += 1;
+                }
+            }
+        }
+        $user_id = Auth::id();
+        if ($user_id && $user_id > 0){
+            User::where('id',$user_id)->increment('crosswords_score',$crosswords_score);
+        }
+        return response()->json(['status'=>200,'data'=>$crosswords_score]);
     }
 }
