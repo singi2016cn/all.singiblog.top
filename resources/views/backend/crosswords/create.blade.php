@@ -45,7 +45,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="seq">横竖序号</label>
-                                        <input type="text" class="form-control" id="seq" name="seq" placeholder="横:1,2,3;竖:一,二,三">
+                                        <input type="text" class="form-control" id="seq" name="seq" placeholder="横:一,二,三;竖:1,2,3">
                                     </div>
                                 </div>
                                 <div class="col-sm-5">
