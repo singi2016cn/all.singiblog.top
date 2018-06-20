@@ -19,7 +19,7 @@
             left: 0;
         }
         .bg-black{
-            background-color: lightgray;
+            background-color: #eee;
         }
         .large-font{
             font-size: 3em;
