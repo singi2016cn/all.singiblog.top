@@ -22,6 +22,9 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::Resource('crosswords','Frontend\CrosswordsController');
 Route::post('crosswords/check','Frontend\CrosswordsController@check')->name('crosswords.check');
 Route::prefix('backend')->name('backend.')->group(function () {
+    Route::get('login','Backend\LoginController@showLoginForm')->name('showLoginForm');
+    Route::post('login','Backend\LoginController@login')->name('login');
+    Route::post('logout', 'Admin\Auth\LoginController@logout')->name('logout');
     Route::Resource('crosswords','Backend\CrosswordsController');
     Route::Resource('crosswords_counts','Backend\CrosswordsCountsController');
 });
