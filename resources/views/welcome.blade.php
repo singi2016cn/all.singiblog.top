@@ -74,6 +74,12 @@
                         <a href="{{ route('login') }}">Login</a>
                         <a href="{{ route('register') }}">Register</a>
                     @endauth
+
+                    @auth('admin')
+                        <a href="{{ route('backend.crosswords.create') }}">Backend-home</a>
+                    @else
+                        <a href="{{ route('backend.login') }}">Backend-login</a>
+                    @endauth
                 </div>
             @endif
 

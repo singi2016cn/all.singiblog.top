@@ -24,7 +24,7 @@ Route::post('crosswords/check','Frontend\CrosswordsController@check')->name('cro
 Route::prefix('backend')->name('backend.')->group(function () {
     Route::get('login','Backend\LoginController@showLoginForm')->name('showLoginForm');
     Route::post('login','Backend\LoginController@login')->name('login');
-    Route::post('logout', 'Admin\Auth\LoginController@logout')->name('logout');
+    Route::post('logout', 'Backend\LoginController@logout')->name('logout');
     Route::Resource('crosswords','Backend\CrosswordsController');
     Route::Resource('crosswords_counts','Backend\CrosswordsCountsController');
 });

@@ -10,12 +10,6 @@ use Illuminate\Http\Request;
 class LoginController extends Controller
 {
     use AuthenticatesUsers;
-    /**
-     * Where to redirect users after login.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/backend/crosswords/create';
 
     /**
      * Create a new controller instance.
@@ -33,16 +27,11 @@ class LoginController extends Controller
     }
 
     public function login(Request $request){
-        if (Auth::attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
+        if (Auth::guard('admin')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
             return redirect()->route('backend.crosswords.create');
         }else{
             return back()->withInput();
         }
-    }
-
-    protected function guard()
-    {
-        return Auth::guard('admin');
     }
 
     public function logout(Request $request)
