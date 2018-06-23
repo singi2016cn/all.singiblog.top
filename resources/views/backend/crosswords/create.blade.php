@@ -135,7 +135,7 @@
                                 $('#del-div').empty();
                             }
                             res.data.forEach(function(v){
-                                $('#del-div').append('<span onclick="confirm_del('+v.id+')" class="label label-danger">'+v.word+'<button type="button" class="close" style="float: none"><span>&times;</span></button></span>');
+                                $('#del-div').append('<span style="margin-right: 5px" onclick="confirm_del('+v.id+')" class="label label-danger">'+v.word+'<button type="button" class="close" style="float: none"><span>&times;</span></button></span>');
 
                                 var cls = 'info';
                                 if (v.is_h === 1) cls = 'success';
