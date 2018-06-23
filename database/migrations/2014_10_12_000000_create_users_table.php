@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->rememberToken();
-            $table->unsignedInteger('crosswords_score')->comment('填字游戏累计得分')->nullable();
+            $table->unsignedInteger('crosswords_score')->comment('填字游戏累计得分')->default(0);
             $table->timestamps();
         });
     }

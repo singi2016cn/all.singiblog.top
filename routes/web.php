@@ -18,9 +18,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home/crosswords', 'HomeController@crosswords')->name('home.crosswords');
 
 Route::Resource('crosswords','Frontend\CrosswordsController');
 Route::post('crosswords/check','Frontend\CrosswordsController@check')->name('crosswords.check');
+
+Route::get('/backend','BackendController@index')->name('backend');
 Route::prefix('backend')->name('backend.')->group(function () {
     Route::get('login','Backend\LoginController@showLoginForm')->name('showLoginForm');
     Route::post('login','Backend\LoginController@login')->name('login');
