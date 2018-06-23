@@ -4,22 +4,9 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            @if (session('status'))
-                <div class="alert alert-success alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    {{ session('status') }}
-                </div>
-            @endif
+            @component('component.alert') success @endcomponent
 
-            @if (count($errors) > 0)
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
+            @component('component.error')  @endcomponent
 
             <div class="panel panel-default">
                 <div class="panel-heading">创建填字游戏</div>
