@@ -43,6 +43,13 @@ class CrosswordsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request,[
+            'crosswords_counts_id'=>'required|min:1',
+            'word'=>'required|string:255',
+            'tip'=>'required|string:255',
+            'cell_ids'=>'required|array',
+            'seq'=>'required|string:15'
+        ]);
         $crosswords = $request->except('_token');
         $crosswords['cell_ids'] = implode(',',$crosswords['cell_ids']);
         Crosswords::insert($crosswords);

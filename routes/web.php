@@ -33,3 +33,4 @@ Route::Resource('market','Frontend\MarketController');
 
 
 Route::post('crosswords/get_crosswords','Api\CrosswordsController@get_crosswords')->name('api.crosswords.get_crosswords');
+Route::post('crosswords/del_crosswords','Api\CrosswordsController@del_crosswords')->name('api.crosswords.del_crosswords');

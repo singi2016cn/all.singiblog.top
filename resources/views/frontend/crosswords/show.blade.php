@@ -58,7 +58,7 @@
                                     <td v-for="m in 10" class="pst" :class="{'bg-black':!cell_exist_ids.includes(m+n)}">
                                         <span class="pst-span text-primary" v-if="cell0_exist_ids.includes(m+n)">@{{words_v[cell0_exist_ids.indexOf(m+n)].seq}}</span>
                                         <span class="pst-span-b text-danger" v-if="cell_b_exist_ids.includes(m+n)">@{{words_h[cell_b_exist_ids.indexOf(m+n)].seq}}</span>
-                                        <input v-if="cell_exist_ids.includes(m+n)" @click="focus_cell(m+n)" @blur="focus_out()" @change="set_panel_input(m+n)" type="text" :name="m+n" :id="m+n" class="form-control" minlength="1" maxlength="1">
+                                        <input style="padding: 6px 10px" v-if="cell_exist_ids.includes(m+n)" @click="focus_cell(m+n)" @blur="focus_out()" @change="set_panel_input(m+n)" type="text" :name="m+n" :id="m+n" class="form-control" minlength="1" maxlength="1">
                                     </td>
                                 </tr>
                             </table>
