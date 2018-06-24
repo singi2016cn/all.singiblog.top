@@ -29,6 +29,7 @@ Route::prefix('backend')->name('backend.')->group(function () {
     Route::post('login','Backend\LoginController@login')->name('login');
     Route::post('logout', 'Backend\LoginController@logout')->name('logout');
     Route::Resource('crosswords','Backend\CrosswordsController');
+    Route::get('crosswords_counts/crosswords_create/{id}','Backend\CrosswordsCountsController@crosswords_create')->name('crosswords_counts.crosswords_create');
     Route::Resource('crosswords_counts','Backend\CrosswordsCountsController');
 });
 

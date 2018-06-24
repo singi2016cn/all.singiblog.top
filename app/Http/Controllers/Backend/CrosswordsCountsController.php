@@ -104,4 +104,8 @@ class CrosswordsCountsController extends Controller
             return redirect()->route('backend.crosswords_counts.index')->with('status','delete success! id = '.$id);
         }
     }
+
+    public function crosswords_create($id){
+        return view('backend.crosswords_counts.crosswords_create')->with('ns',[0,10,20,30,40,50,60,70,80,90])->with('item',CrosswordsCounts::findOrFail($id));
+    }
 }

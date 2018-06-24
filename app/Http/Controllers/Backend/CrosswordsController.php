@@ -21,7 +21,8 @@ class CrosswordsController extends Controller
      */
     public function index()
     {
-        //
+        $data = Crosswords::orderBy('id','desc')->paginate('10');
+        return view('backend.crosswords.index')->with('data',$data);
     }
 
     /**
@@ -29,8 +30,7 @@ class CrosswordsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
+    public function create(){
         $crosswords_counts = CrosswordsCounts::orderBy('id','desc')->get();
         return view('backend/crosswords/create',['ns'=>[0,10,20,30,40,50,60,70,80,90],'crosswords_counts'=>$crosswords_counts]);
     }
@@ -52,7 +52,7 @@ class CrosswordsController extends Controller
         ]);
         $crosswords = $request->except('_token');
         $crosswords['cell_ids'] = implode(',',$crosswords['cell_ids']);
-        Crosswords::insert($crosswords);
+        Crosswords::create($crosswords);
         return back()->with('status', 'create success');
     }
 
@@ -64,7 +64,7 @@ class CrosswordsController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('backend.crosswords.show')->with('item',Crosswords::findOrFail($id));
     }
 
     /**
@@ -75,7 +75,7 @@ class CrosswordsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('backend.crosswords.edit')->with('item',Crosswords::findOrFail($id));
     }
 
     /**
@@ -87,7 +87,17 @@ class CrosswordsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($id > 0){
+            $this->validate($request,[
+                'word'=>'required|string:255',
+                'tip'=>'required|string:255',
+                'is_h'=>'required',
+                'seq'=>'required|string:15'
+            ]);
+            $request_data = $request->except(['_token','_method']);
+            Crosswords::where('id',$id)->update($request_data);
+            return back()->with('status','update success,id = '.$id);
+        }
     }
 
     /**
@@ -98,6 +108,7 @@ class CrosswordsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Crosswords::destroy($id);
+        return redirect()->route('backend.crosswords.index')->with('status','delete success,id = '.$id);
     }
 }
