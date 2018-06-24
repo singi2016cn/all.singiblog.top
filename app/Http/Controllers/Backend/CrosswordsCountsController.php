@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backend;
 
+use App\Model\Crosswords;
 use App\Model\CrosswordsCounts;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -100,6 +101,8 @@ class CrosswordsCountsController extends Controller
     public function destroy($id)
     {
         if ($id > 0){
+            $data = Crosswords::where('crosswords_counts_id',$id)->first();
+            if ($data) return back()->with('alert_tpl','error')->with('status','delete fail,because it has one more relation records exist on Crosswords');
             CrosswordsCounts::destroy($id);
             return redirect()->route('backend.crosswords_counts.index')->with('status','delete success! id = '.$id);
         }

@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            @component('component.alert') success @endcomponent
+            @component('component.alert') {{ session('alert_tpl') ?? 'success' }} @endcomponent
             <div class="panel panel-default">
                 <div class="panel-heading">
                     填字游戏
@@ -24,7 +24,7 @@
                     @forelse($data as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
-                            <td>{{ $item->crosswordsCounts['id'] }}</td>
+                            <td><a href="{{ route('backend.crosswords_counts.show',['id'=>$item->crosswordsCounts['id']]) }}">{{ $item->crosswordsCounts['id'] }}</a></td>
                             <td>{{ $item->word }}</td>
                             <td title="{{ $item->tip }}">{{ mb_substr($item->tip,0,20,'utf-8') }}</td>
                             <td>{{ $item->is_h }}</td>
