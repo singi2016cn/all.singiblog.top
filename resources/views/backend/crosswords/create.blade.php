@@ -5,7 +5,6 @@
     <div class="row">
         <div class="col-md-12">
             @component('component.alert') success @endcomponent
-
             @component('component.error')  @endcomponent
 
             <div class="panel panel-default">

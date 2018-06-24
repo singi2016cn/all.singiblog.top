@@ -39,7 +39,7 @@
                     <ul class="nav navbar-nav">
                         @if(Auth::guard('admin')->check())
                             <li><a href="{{route('backend')}}">后台首页</a></li>
-                            <li><a href="{{route('backend.crosswords_counts.create')}}">填字游戏号数</a></li>
+                            <li><a href="{{route('backend.crosswords_counts.index')}}">填字游戏号数</a></li>
                             <li><a href="{{route('backend.crosswords.create')}}">填字游戏</a></li>
                         @endif
                     </ul>

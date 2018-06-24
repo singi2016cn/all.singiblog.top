@@ -18,7 +18,7 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            $url = $guard ? '/backend/crosswords/create':'/home';
+            $url = $guard ? '/backend':'/home';
             return redirect($url);
         }
 

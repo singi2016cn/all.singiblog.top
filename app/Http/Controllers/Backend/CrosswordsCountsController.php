@@ -20,7 +20,8 @@ class CrosswordsCountsController extends Controller
      */
     public function index()
     {
-        //
+        $data = CrosswordsCounts::orderBy('id','desc')->paginate(10);
+        return view('backend/crosswords_counts/index')->with('data',$data);
     }
 
     /**
@@ -57,7 +58,7 @@ class CrosswordsCountsController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('backend.crosswords_counts.show')->with('item',CrosswordsCounts::findOrFail($id));
     }
 
     /**
@@ -68,7 +69,7 @@ class CrosswordsCountsController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('backend.crosswords_counts.edit')->with('item',CrosswordsCounts::findOrFail($id));
     }
 
     /**
@@ -80,7 +81,14 @@ class CrosswordsCountsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($id > 0){
+            $this->validate($request,[
+                'des'=>'required|string:255'
+            ]);
+            $request_data = $request->except(['_token','_method']);
+            CrosswordsCounts::where('id',$id)->update($request_data);
+            return back()->with('status','update success,id = '.$id);
+        }
     }
 
     /**
@@ -91,6 +99,9 @@ class CrosswordsCountsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if ($id > 0){
+            CrosswordsCounts::destroy($id);
+            return redirect()->route('backend.crosswords_counts.index')->with('status','delete success! id = '.$id);
+        }
     }
 }

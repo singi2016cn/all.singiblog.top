@@ -28,7 +28,7 @@ class LoginController extends Controller
 
     public function login(Request $request){
         if (Auth::guard('admin')->attempt(['email' => $request->input('email'), 'password' => $request->input('password')])) {
-            return redirect()->route('backend.crosswords.create');
+            return redirect()->route('backend');
         }else{
             return back()->withInput();
         }
