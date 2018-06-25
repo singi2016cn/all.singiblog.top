@@ -23,6 +23,8 @@ Route::get('/home/crosswords', 'HomeController@crosswords')->name('home.crosswor
 Route::Resource('crosswords','Frontend\CrosswordsController');
 Route::post('crosswords/check','Frontend\CrosswordsController@check')->name('crosswords.check');
 
+Route::Resource('adventures','Frontend\AdventuresController');
+
 Route::get('/backend','BackendController@index')->name('backend');
 Route::prefix('backend')->name('backend.')->group(function () {
     Route::get('login','Backend\LoginController@showLoginForm')->name('showLoginForm');

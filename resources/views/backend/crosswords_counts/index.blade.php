@@ -32,7 +32,7 @@
                             </td>
                         </tr>
                         @empty
-                        <tr class="text-center"><td>没有数据</td></tr>
+                        <tr class="text-center"><td colspan="5">没有数据</td></tr>
                     @endforelse
                 </table>
                 <div class="panel-footer text-center" style="padding: 0">
