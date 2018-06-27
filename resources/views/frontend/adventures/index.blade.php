@@ -11,14 +11,17 @@
     <div class="row">
         <div class="col-md-5">
             <div class="panel panel-default">
-                <div class="panel-heading">@{{ player.name }}</div>
+                <div class="panel-heading">@{{ player.properties.name }}</div>
                 <div class="panel-body">
                     <div class="progress">
                         <div :class="'progress-bar progress-bar-'+player_cls_percentage+' progress-bar-striped'" :style="'width: '+player_hp_percentage+'%'">
                             <span>@{{ player.curr_hp }}</span>
                         </div>
                     </div>
-                    <button v-for="attributes in player.attributes" class="btn btn-primary mr" type="button">@{{ attributes.attr }} <span class="badge">@{{ attributes.val }}</span></button>
+                    <button class="btn btn-primary mr" type="button">攻击<span class="badge">@{{ player.properties.attack }}</span></button>
+                    <button class="btn btn-primary mr" type="button">防御<span class="badge">@{{ player.properties.defend }}</span></button>
+                    <button class="btn btn-primary mr" type="button">闪避<span class="badge">@{{ player.properties.dodge }}</span></button>
+                    <button class="btn btn-primary mr" type="button">必杀<span class="badge">@{{ player.properties.kill }}</span></button>
                 </div>
                 {{--<div class="panel-footer">
                     <span v-for="ability in player.abilities" :class="'mr label label-'+ability.cls">@{{ ability.val }}</span>
@@ -35,14 +38,17 @@
         </div>
         <div class="col-md-5">
             <div class="panel panel-default">
-                <div class="panel-heading">@{{ enemy.name }}</div>
+                <div class="panel-heading">@{{ enemy.properties.name }}</div>
                 <div class="panel-body">
                     <div class="progress">
                         <div :class="'progress-bar progress-bar-'+enemy_cls_percentage+' progress-bar-striped'" :style="'width: '+enemy_hp_percentage+'%'">
                             <span>@{{ enemy.curr_hp }}</span>
                         </div>
                     </div>
-                    <button v-for="attributes in enemy.attributes" class="btn btn-primary mr" type="button">@{{ attributes.attr }} <span class="badge">@{{ attributes.val }}</span></button>
+                    <button class="btn btn-primary mr" type="button">攻击<span class="badge">@{{ enemy.properties.attack }}</span></button>
+                    <button class="btn btn-primary mr" type="button">防御<span class="badge">@{{ enemy.properties.defend }}</span></button>
+                    <button class="btn btn-primary mr" type="button">闪避<span class="badge">@{{ enemy.properties.dodge }}</span></button>
+                    <button class="btn btn-primary mr" type="button">必杀<span class="badge">@{{ enemy.properties.kill }}</span></button>
                 </div>
                {{-- <div class="panel-footer">
                     <span v-for="ability in enemy.abilities" :class="'mr label label-'+ability.cls">@{{ ability.val }}</span>
@@ -73,50 +79,28 @@
 @section('script')
     <script>
 
-        var stopIntervalIndex;
-        var stopIntervalIndex2;
+        var stopIntervalIndex,stopIntervalIndex2;
 
         var app = new Vue({
             el: '#app',
             data: {
                 des : [],
                 player: {
-                    name : 'singi',
-                    hp : 200,
-                    curr_hp : 200,
+                    curr_hp : 20,
                     damage : 0,
-                    attributes: [
-                        {'attr':'攻击力','val': 10},
-                        {'attr':'防御力','val': 5},
-                        {'attr':'闪避','val': 1000},
-                        {'attr':'必杀','val': 8000}
-                    ],
+                    properties:{'name':'singi','hp':20,'attack':10,'defend':10,'dodge':1000,'kill':1000},
                     abilities: [
-                        {'cls':'default','val': '格挡'},
-                        {'cls':'primary','val': '突刺'},
-                        {'cls':'success','val': '飞刀'},
-                        {'cls':'info','val': '奋力一击'},
-                        {'cls':'warning','val': '龙翔'},
-                        {'cls':'danger','val': '冲锋'}
+                        {'name': '格挡','type':'主动','description':'常用的防御性技能','attack':0,'defend':3},
                     ],
                     equipments: [
-                        {'cls':'default','val': '短剑'},
-                        {'cls':'primary','val': '布甲'},
-                        {'cls':'success','val': '皮盾'},
-                        {'cls':'info','val': '披风'},
+                        {'name': '短剑','type':'武器','description':'普通的武器','attack':1,'defend':0},
+                        {'name': '布甲','type':'护甲','description':'普通的武器','attack':0,'defend':1}
                     ]
                 },
                 enemy: {
-                    name : '毒蛇',
-                    hp : 20,
                     curr_hp : 20,
                     damage : 0,
-                    attributes: [
-                        {'attr':'攻击力','val': 7},
-                        {'attr':'防御力','val': 8},
-                        {'attr':'闪避','val': 1000},
-                        {'attr':'必杀','val': 100}
-                    ],
+                    properties:{'name':'毒蛇','hp':20,'attack':7,'defend':8,'dodge':1000,'kill':1000},
                     abilities: [
                         {'cls':'default','val': '毒液喷刺'},
                     ],
@@ -127,11 +111,11 @@
             },
             computed:{
                 player_hp_percentage: function () {
-                    return this.player.curr_hp/this.player.hp*100;
+                    return this.player.curr_hp/this.player.properties.hp*100;
                 },
                 player_cls_percentage: function () {
                     var ret = 'danger';
-                    var percentage = this.player.curr_hp/this.player.hp*100;
+                    var percentage = this.player.curr_hp/this.player.properties.hp*100;
                     if (percentage > 70 && percentage <= 100) {
                         ret = 'success';
                     } else if (percentage > 30 && percentage <= 70) {
@@ -142,11 +126,11 @@
                     return ret;
                 },
                 enemy_hp_percentage: function () {
-                    return this.enemy.curr_hp/this.enemy.hp*100;
+                    return this.enemy.curr_hp/this.enemy.properties.hp*100;
                 },
                 enemy_cls_percentage: function () {
                     var ret = 'danger';
-                    var percentage = this.enemy.curr_hp/this.enemy.hp*100;
+                    var percentage = this.enemy.curr_hp/this.enemy.properties.hp*100;
                     if (percentage > 70 && percentage <= 100) {
                         ret = 'success';
                     } else if (percentage > 30 && percentage <= 70) {
@@ -159,10 +143,10 @@
             },
             method:{
                 player_damage:function(){
-                    return this.enemy.attributes[0].val - this.player.attributes[1].val;
+                    return this.enemy.properties.attack - this.player.properties.attack;
                 },
                 enemy_damage:function(){
-                    return this.player.attributes[0].val - this.enemy.attributes[1].val;
+                    return this.player.properties.attack - this.enemy.properties.attack;
                 }
             }
         });
@@ -174,13 +158,13 @@
             if (player_data) app.player = JSON.parse(player_data);
 
             find_enemy();
-            show('遇到敌人'+app.enemy.name);
+            show('遇到敌人'+app.enemy.properties.name);
 
-            show(app.player.name + ' vs ' + app.enemy.name+',战斗开始...');
-
-            app.player.damage = app.player.attributes[0].val - app.enemy.attributes[1].val;
+            show(app.player.properties.name + ' vs ' + app.enemy.properties.name+',战斗开始...');
+            //计算基础伤害值
+            app.player.damage = app.player.properties.attack - app.enemy.properties.defend;
             if (app.player.damage < 0)  app.player.damage = 0;
-            app.enemy.damage = app.enemy.attributes[0].val - app.player.attributes[1].val;
+            app.enemy.damage = app.enemy.properties.attack - app.player.properties.defend;
             if (app.enemy.damage < 0)  app.enemy.damage = 0;
 
             if (app.player.damage == 0 && app.enemy.damage == 0){
@@ -196,9 +180,9 @@
                         show(app.player.name + '被击败了');
                     }
                     if (app.enemy.curr_hp <=0) {
-                        app.player.attributes[0].val += 5;
-                        app.player.attributes[1].val += 5;
-                        show(app.player.name + '胜利了,'+app.player.attributes[0].attr+'+5,'+app.player.attributes[1].attr+'+5');
+                        app.player.properties.attack += 5;
+                        app.player.properties.defend += 5;
+                        show(app.player.name + '胜利了,'+app.player.properties.attack+'+5,'+app.player.properties.defend+'+5');
                     }
 
                     var count_down = 3;
@@ -206,8 +190,8 @@
                         show('正在休息...('+count_down+')');
                         count_down -= 1;
                         if (count_down <=0){
-                            app.player.hp +=10;
-                            app.player.curr_hp = app.player.hp;
+                            app.player.properties.hp +=10;
+                            app.player.curr_hp = app.player.properties.hp;
                             localStorage.setItem('player',JSON.stringify(app.player));
                             //TODO 更新服务器数据
                             clear_show();
@@ -220,25 +204,25 @@
                 }
 
                 //计算闪避
-                if (randomNum(0,10000) <= app.player.attributes[2].val) app.enemy.damage = 0;
-                if (randomNum(0,10000) <= app.enemy.attributes[2].val) app.player.damage = 0;
+                if (randomNum(0,10000) <= app.player.properties.dodge) app.enemy.damage = 0;
+                if (randomNum(0,10000) <= app.enemy.properties.dodge) app.player.damage = 0;
 
                 //计算必杀
                 var kill_des = '';
-                if (randomNum(0,10000) <= app.player.attributes[3].val){
+                if (randomNum(0,10000) <= app.player.properties.kill){
                     app.player.damage *= 3;
                     kill_des = ',触发了必杀';
                 }
-                if (randomNum(0,10000) <= app.enemy.attributes[3].val){
+                if (randomNum(0,10000) <= app.enemy.properties.kill){
                     app.enemy.damage *= 3;
                     kill_des = ',触发了必杀';
                 }
                 
-                show(app.player.name + ' 攻击了 ' + app.enemy.name + ' 1次,造成了 ' + app.player.damage + ' 点伤害'+kill_des);
+                show(app.player.properties.name + ' 攻击了 ' + app.enemy.properties.name + ' 1次,造成了 ' + app.player.damage + ' 点伤害'+kill_des);
                 app.enemy.curr_hp -= app.player.damage;
                 if (app.enemy.curr_hp < 0) app.enemy.curr_hp = 0;
 
-                show(app.enemy.name + ' 攻击了 ' + app.player.name + ' 1次,造成了 ' + app.enemy.damage + ' 点伤害'+kill_des);
+                show(app.enemy.properties.name + ' 攻击了 ' + app.player.properties.name + ' 1次,造成了 ' + app.enemy.damage + ' 点伤害'+kill_des);
                 app.player.curr_hp -= app.enemy.damage;
                 if (app.player.curr_hp < 0) app.player.curr_hp = 0;
             },1000);
@@ -259,12 +243,12 @@
         function clear_show(){
             app.des = [];
         }
-
+        //获取敌人
         function find_enemy(){
-            app.enemy.name = getName();
-            app.enemy.curr_hp = app.enemy.hp = randomNum(1,app.player.hp+10);
-            app.enemy.attributes[0].val = randomNum(1,app.player.attributes[0].val+10);
-            app.enemy.attributes[1].val = randomNum(1,app.player.attributes[1].val+10);
+            app.enemy.properties.name = getName();
+            app.enemy.curr_hp = app.enemy.properties.hp = randomNum(1,app.player.properties.hp+10);
+            app.enemy.properties.attack = randomNum(1,app.player.properties.attack+10);
+            app.enemy.properties.defend = randomNum(1,app.player.properties.defend+10);
         }
         //生成从[min,max]的随机数
         function randomNum(min, max) {
