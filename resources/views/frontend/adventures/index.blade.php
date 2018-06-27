@@ -215,11 +215,15 @@
                             //经验值先加满
                             app.player.properties.exp = app.level_setting[app.player.properties.level].exp;
                             app.player.properties.level +=1;
+                            console.log(app.player.properties.level);
+                            if (app.player.properties.level === app.level_setting[app.level_setting.length-1].level) {
+                                end();
+                            }
                             app.player.properties.exp = is_level_up;
 
                             app.player.properties.attack += 5;
                             app.player.properties.defend += 5;
-                            var level_des = ' 升级了,现在的等级是'+app.player.properties.level+',血量+10,攻击+5,防御+5';
+                            level_des = ' 升级了,现在的等级是'+app.player.properties.level+',血量+10,攻击+5,防御+5';
                         }else{
                             app.player.properties.exp = is_level_up;
                         }
@@ -293,6 +297,14 @@
             fight();
         }
 
+        function end() {
+            clearInterval(stopIntervalIndex);
+            clearInterval(stopIntervalIndex2);
+            clear_show();
+            show('你已成王!!!');
+            return false;
+        }
+
         function show(des){
             app.des.unshift(des);
         }
@@ -303,7 +315,7 @@
         function find_enemy(){
             app.enemy.properties.name = getName();
             app.enemy.properties.level = randomNum(1,app.player.properties.level+5);
-            app.enemy.properties.exp = randomNum(1,app.player.properties.exp+5);
+            app.enemy.properties.exp = randomNum(1,50000);
             app.enemy.curr_hp = app.enemy.properties.hp = randomNum(1,app.player.properties.hp+10);
             app.enemy.properties.attack = randomNum(1,app.player.properties.attack+10);
             app.enemy.properties.defend = randomNum(1,app.player.properties.defend+10);
