@@ -8,23 +8,17 @@
             @component('component.error')  @endcomponent
 
             <div class="panel panel-default">
-                <div class="panel-heading">创建填字游戏</div>
+                <div class="panel-heading">
+                    创建填字游戏(第{{ $item->id }}号)
+                    <a style="float: right" href="{{ route('backend.crosswords_counts.index') }}">返回</a>
+                </div>
 
                 <div class="panel-body">
                     <form action="{{ route('backend.crosswords.store') }}" method="post">
                         {{ csrf_field() }}
+                        <input type="text" name="crosswords_counts_id" value="{{$item->id }}" hidden>
                         <div class="row">
                             <div class="col-sm-7">
-                                <div class="form-group">
-                                    <label for="word">第xx号</label>
-                                    <select class="form-control" name="crosswords_counts_id" id="crosswords_counts_id" onchange="get_crosswords()">
-                                        <option value="0">请选择</option>
-                                        @foreach($crosswords_counts as $crosswords_count)
-                                            <option value="{{ $crosswords_count->id }}"  @if( old('crosswords_counts_id') == $crosswords_count->id) selected  @endif>第{{ $crosswords_count->id }}号</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-
                                 <div class="form-group">
                                     <label for="word">答案</label>
                                     <input type="text" class="form-control" id="word" name="word" value="{{ old('word') }}" placeholder="答案">
@@ -100,53 +94,51 @@
 
 @section('script')
     <script>
-        function get_crosswords(){
-            var id = $(':selected').val();
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: "POST",
-                url: '{{ route('api.crosswords.get_crosswords') }}',
-                data: {id:id},
-                success: function(res){
-                    console.log(res);
-                    if (res.code === 200){
-                        if (res.data){
-                            for (var i=0; i<=100;i++){
-                                $('#'+i).parent().removeClass('info success');
-                                $('#'+i).show();
-                                $('#span-word'+i).remove();
-                                $('#cell_span'+i).html('');
-                                $('#del-div').empty();
-                            }
-                            res.data.forEach(function(v){
-                                $('#del-div').append('<span style="margin-right: 5px" onclick="confirm_del('+v.id+')" class="label label-danger">'+v.word+'<button type="button" class="close" style="float: none"><span>&times;</span></button></span>');
-
-                                var cls = 'info';
-                                if (v.is_h === 1) cls = 'success';
-                                var cell_ids_arr = v.cell_ids.split(',');
-                                var cell_span_html = $('#cell_span'+cell_ids_arr[0]).html();
-                                if (cell_span_html) {
-                                    $('#cell_span'+cell_ids_arr[0]).html(cell_span_html+','+v.seq);
-                                }else{
-                                    $('#cell_span'+cell_ids_arr[0]).html(v.seq);
-                                }
-
-                                cell_ids_arr.forEach(function(v2,i){
-                                    $('#'+v2).parent().addClass(cls);
-                                    //$('#'+v2).hide();
-                                    if (!$('#span-word'+v2).html()){
-                                        $('#'+v2).parent().append('<span id="span-word'+v2+'">'+v.word[i]+'</span>');
-                                    }
-                                })
-                            })
+        var id = {{ $item->id }};
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: "POST",
+            url: '{{ route('api.crosswords.get_crosswords') }}',
+            data: {id:id},
+            success: function(res){
+                console.log(res);
+                if (res.code === 200){
+                    if (res.data){
+                        for (var i=0; i<=100;i++){
+                            $('#'+i).parent().removeClass('info success');
+                            $('#'+i).show();
+                            $('#span-word'+i).remove();
+                            $('#cell_span'+i).html('');
+                            $('#del-div').empty();
                         }
+                        res.data.forEach(function(v){
+                            $('#del-div').append('<span style="margin-right: 5px" onclick="confirm_del('+v.id+')" class="label label-danger">'+v.word+'<button type="button" class="close" style="float: none"><span>&times;</span></button></span>');
+
+                            var cls = 'info';
+                            if (v.is_h === 1) cls = 'success';
+                            var cell_ids_arr = v.cell_ids.split(',');
+                            var cell_span_html = $('#cell_span'+cell_ids_arr[0]).html();
+                            if (cell_span_html) {
+                                $('#cell_span'+cell_ids_arr[0]).html(cell_span_html+','+v.seq);
+                            }else{
+                                $('#cell_span'+cell_ids_arr[0]).html(v.seq);
+                            }
+
+                            cell_ids_arr.forEach(function(v2,i){
+                                $('#'+v2).parent().addClass(cls);
+                                //$('#'+v2).hide();
+                                if (!$('#span-word'+v2).html()){
+                                    $('#'+v2).parent().append('<span id="span-word'+v2+'">'+v.word[i]+'</span>');
+                                }
+                            })
+                        })
                     }
-                },
-                dataType: 'json'
-            });
-        }
+                }
+            },
+            dataType: 'json'
+        });
 
         function confirm_del(id){
             console.log(id);

@@ -6,5 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Crosswords extends Model
 {
-    protected $fillable = [];
+    protected $guarded = [];
+
+    public function crosswordsCounts(){
+        return $this->belongsTo(CrosswordsCounts::class);
+    }
 }

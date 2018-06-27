@@ -13,6 +13,16 @@
                 </div>
             </div>
         </a>
+        <a href="{{ route('adventures.index') }}">
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">泰句心的冒险</div>
+                    <div class="panel-body">
+                        嘿，冒险者，来玩一局文字游戏吧
+                    </div>
+                </div>
+            </div>
+        </a>
     </div>
 </div>
 @endsection
