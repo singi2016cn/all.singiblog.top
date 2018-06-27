@@ -64,6 +64,9 @@
             </div>
         </div>
     </div>
+    <div class="row navbar-fixed-bottom text-center" style="margin-bottom: 20px">
+        <button onclick="stop_fight()" class="btn btn-primary">重新开始</button>
+    </div>
 </div>
 @endsection
 
@@ -82,7 +85,7 @@
                         {'attr':'攻击力','val': 10},
                         {'attr':'防御力','val': 5},
                         {'attr':'闪避','val': 1000},
-                        {'attr':'必杀','val': 100}
+                        {'attr':'必杀','val': 8000}
                     ],
                     abilities: [
                         {'cls':'default','val': '格挡'},
@@ -176,6 +179,12 @@
             app.enemy.damage = app.enemy.attributes[0].val - app.player.attributes[1].val;
             if (app.enemy.damage < 0)  app.enemy.damage = 0;
 
+            if (app.player.damage == 0 && app.enemy.damage == 0){
+                show('旗鼓相当的对手,重新开始...');
+                fight();
+                return false;
+            }
+
             var stopIntervalIndex = setInterval(function(){
                 if (app.player.curr_hp <=0 || app.enemy.curr_hp <=0){
                     show('战斗结束');
@@ -187,35 +196,69 @@
                         app.player.attributes[1].val += 5;
                         show(app.player.name + '胜利了,'+app.player.attributes[0].attr+'+5,'+app.player.attributes[1].attr+'+5');
                     }
-                    localStorage.setItem('player',JSON.stringify(app.player));
+
+                    var count_down = 3;
+                    var stopIntervalIndex2 = setInterval(function(){
+                        show('正在休息...('+count_down+')');
+                        count_down -= 1;
+                        if (count_down <=0){
+                            app.player.hp +=10;
+                            app.player.curr_hp = app.player.hp;
+                            localStorage.setItem('player',JSON.stringify(app.player));
+                            //TODO 更新服务器数据
+                            clear_show();
+                            clearInterval(stopIntervalIndex2);
+                            fight();
+                        }
+                    },1000);
                     clearInterval(stopIntervalIndex);
-
-                    setInterval(function(){show('正在休息...')},1000);
-
-                    setTimeout(function () {
-                        location.reload();
-                    },3000);
                     return false;
                 }
-                show(app.player.name + ' 攻击了 ' + app.enemy.name + ' 1次,造成了 ' + app.player.damage + ' 点伤害');
-                app.player.curr_hp -= app.enemy.damage;
-                if (app.player.curr_hp < 0) app.player.curr_hp = 0;
 
-                show(app.enemy.name + ' 攻击了 ' + app.player.name + ' 1次,造成了 ' + app.enemy.damage + ' 点伤害');
+                //计算闪避
+                if (randomNum(0,10000) <= app.player.attributes[2].val) app.enemy.damage = 0;
+                if (randomNum(0,10000) <= app.enemy.attributes[2].val) app.player.damage = 0;
+
+                //计算必杀
+                var kill_des = '';
+                if (randomNum(0,10000) <= app.player.attributes[3].val){
+                    app.player.damage *= 3;
+                    kill_des = ',触发了必杀';
+                }
+                if (randomNum(0,10000) <= app.enemy.attributes[3].val){
+                    app.enemy.damage *= 3;
+                    kill_des = ',触发了必杀';
+                }
+                
+                show(app.player.name + ' 攻击了 ' + app.enemy.name + ' 1次,造成了 ' + app.player.damage + ' 点伤害'+kill_des);
                 app.enemy.curr_hp -= app.player.damage;
                 if (app.enemy.curr_hp < 0) app.enemy.curr_hp = 0;
+
+                show(app.enemy.name + ' 攻击了 ' + app.player.name + ' 1次,造成了 ' + app.enemy.damage + ' 点伤害'+kill_des);
+                app.player.curr_hp -= app.enemy.damage;
+                if (app.player.curr_hp < 0) app.player.curr_hp = 0;
             },1000);
         }
 
         fight();
 
+        function stop_fight(){
+            localStorage.clear();
+            location.reload();
+        }
+
         function show(des){
             app.des.unshift(des);
         }
+        function clear_show(){
+            app.des = [];
+        }
+
         function find_enemy(){
             app.enemy.name = getName();
-            app.enemy.attributes[0].val = randomNum(1,10);
-            app.enemy.attributes[1].val = randomNum(1,10);
+            app.enemy.curr_hp = app.enemy.hp = randomNum(1,app.player.hp+10);
+            app.enemy.attributes[0].val = randomNum(1,app.player.attributes[0].val+10);
+            app.enemy.attributes[1].val = randomNum(1,app.player.attributes[1].val+10);
         }
         //生成从minNum到maxNum的随机数
         function randomNum(minNum,maxNum){
