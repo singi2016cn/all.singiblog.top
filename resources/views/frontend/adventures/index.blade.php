@@ -72,6 +72,10 @@
 
 @section('script')
     <script>
+
+        var stopIntervalIndex;
+        var stopIntervalIndex2;
+
         var app = new Vue({
             el: '#app',
             data: {
@@ -185,7 +189,7 @@
                 return false;
             }
 
-            var stopIntervalIndex = setInterval(function(){
+            stopIntervalIndex = setInterval(function(){
                 if (app.player.curr_hp <=0 || app.enemy.curr_hp <=0){
                     show('战斗结束');
                     if (app.player.curr_hp <=0){
@@ -198,7 +202,7 @@
                     }
 
                     var count_down = 3;
-                    var stopIntervalIndex2 = setInterval(function(){
+                    stopIntervalIndex2 = setInterval(function(){
                         show('正在休息...('+count_down+')');
                         count_down -= 1;
                         if (count_down <=0){
@@ -244,7 +248,9 @@
 
         function stop_fight(){
             localStorage.clear();
-            location.reload();
+            clearInterval(stopIntervalIndex);
+            clearInterval(stopIntervalIndex2);
+            fight();
         }
 
         function show(des){
@@ -260,20 +266,13 @@
             app.enemy.attributes[0].val = randomNum(1,app.player.attributes[0].val+10);
             app.enemy.attributes[1].val = randomNum(1,app.player.attributes[1].val+10);
         }
-        //生成从minNum到maxNum的随机数
-        function randomNum(minNum,maxNum){
-            switch(arguments.length){
-                case 1:
-                    return parseInt(Math.random()*minNum+1,10);
-                    break;
-                case 2:
-                    return parseInt(Math.random()*(maxNum-minNum+1)+minNum,10);
-                    break;
-                default:
-                    return 0;
-                    break;
-            }
+        //生成从[min,max]的随机数
+        function randomNum(min, max) {
+            min = Math.ceil(min*1);
+            max = Math.floor(max*1);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
         }
+
         function getName(){
             var familyNames = [
                 "赵", "钱", "孙", "李", "周", "吴", "郑", "王", "冯", "陈",
