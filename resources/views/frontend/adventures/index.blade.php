@@ -95,7 +95,7 @@
         var stopIntervalIndex,stopIntervalIndex2;
 
         var kill_tpl = ' 触发了必杀,';
-        var init_player = {'name':'singi','level':1,'exp':0,'hp':20,'attack':10,'defend':10,'dodge':1000,'kill':4000};
+        var init_player = {'name':'singi','level':9,'exp':0,'hp':20,'attack':10,'defend':10,'dodge':1000,'kill':4000};
 
         var app = new Vue({
             el: '#app',
@@ -111,6 +111,7 @@
                     {'level':8,'exp':3550},
                     {'level':9,'exp':13550},
                     {'level':10,'exp':1113550},
+                    {'level':11,'exp':1113550},
                 ],
                 des : [],
                 player: {
@@ -154,7 +155,6 @@
                     return ret;
                 },
                 player_exp_percentage: function () {
-                    console.log(this.player.properties.exp/(this.level_setting[this.player.properties.level].exp)*100);
                     return this.player.properties.exp/(this.level_setting[this.player.properties.level].exp)*100;
                 },
                 enemy_hp_percentage: function () {
@@ -215,8 +215,9 @@
                             //经验值先加满
                             app.player.properties.exp = app.level_setting[app.player.properties.level].exp;
                             app.player.properties.level +=1;
-                            if (app.player.properties.level === app.level_setting[app.level_setting.length-1].level) {
+                            if (app.player.properties.level === app.level_setting[app.level_setting.length-2].level) {
                                 end();
+                                return false;
                             }
                             app.player.properties.exp = is_level_up;
 
@@ -301,7 +302,6 @@
             clearInterval(stopIntervalIndex2);
             clear_show();
             show('你已成王!!!');
-            return false;
         }
 
         function show(des){
@@ -314,7 +314,7 @@
         function find_enemy(){
             app.enemy.properties.name = getName();
             app.enemy.properties.level = randomNum(1,app.player.properties.level+5);
-            app.enemy.properties.exp = randomNum(1,app.player.properties.exp+5);
+            app.enemy.properties.exp = randomNum(1,app.level_setting[app.player.properties.level].exp);
             app.enemy.curr_hp = app.enemy.properties.hp = randomNum(1,app.player.properties.hp+10);
             app.enemy.properties.attack = randomNum(1,app.player.properties.attack+10);
             app.enemy.properties.defend = randomNum(1,app.player.properties.defend+10);
