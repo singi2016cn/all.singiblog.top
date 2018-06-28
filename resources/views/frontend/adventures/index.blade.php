@@ -26,18 +26,18 @@
                             <span>@{{ player.curr_hp }}/@{{ player.properties.hp }}</span>
                         </div>
                     </div>
-                    <button class="btn btn-danger mr" type="button">伤害<span class="badge">@{{ player.damage }}</span></button>
-                    <button class="btn btn-primary mr" type="button">攻击<span class="badge">@{{ player.properties.attack }}</span></button>
-                    <button class="btn btn-primary mr" type="button">防御<span class="badge">@{{ player.properties.defend }}</span></button>
-                    <button class="btn btn-primary mr" type="button">闪避<span class="badge">@{{ player.properties.dodge }}</span></button>
-                    <button class="btn btn-primary mr" type="button">必杀<span class="badge">@{{ player.properties.kill }}</span></button>
+                    <button class="btn btn-danger btn-sm mr" type="button">伤害<span class="badge">@{{ player.damage }}</span></button>
+                    <button class="btn btn-primary btn-sm mr" type="button">攻击<span class="badge">@{{ player.properties.attack }}</span></button>
+                    <button class="btn btn-primary btn-sm mr" type="button">防御<span class="badge">@{{ player.properties.defend }}</span></button>
+                    <button class="btn btn-primary btn-sm mr" type="button">闪避<span class="badge">@{{ player.properties.dodge }}</span></button>
+                    <button class="btn btn-primary btn-sm mr" type="button">必杀<span class="badge">@{{ player.properties.kill }}</span></button>
                 </div>
-                {{--<div class="panel-footer">
-                    <span v-for="ability in player.abilities" :class="'mr label label-'+ability.cls">@{{ ability.val }}</span>
+                <div class="panel-footer">
+                    <span v-for="equipment in player.equipments" :key="equipment.id" :title="equipment.description" class="mr label label-primary">@{{ equipment.name }}</span>
                 </div>
                 <div class="panel-body">
-                    <span v-for="equipment in player.equipments" :class="'mr label label-'+equipment.cls">@{{ equipment.val }}</span>
-                </div>--}}
+                    <span v-for="ability in player.abilities" :key="ability.id" :title="ability.description" class="mr label label-primary">@{{ ability.name }}</span>
+                </div>
             </div>
         </div>
         <div class="col-md-2">
@@ -57,18 +57,19 @@
                             <span>@{{ enemy.curr_hp }}/@{{ enemy.properties.hp }}</span>
                         </div>
                     </div>
-                    <button class="btn btn-danger mr" type="button">伤害<span class="badge">@{{ enemy.damage }}</span></button>
-                    <button class="btn btn-primary mr" type="button">攻击<span class="badge">@{{ enemy.properties.attack }}</span></button>
-                    <button class="btn btn-primary mr" type="button">防御<span class="badge">@{{ enemy.properties.defend }}</span></button>
-                    <button class="btn btn-primary mr" type="button">闪避<span class="badge">@{{ enemy.properties.dodge }}</span></button>
-                    <button class="btn btn-primary mr" type="button">必杀<span class="badge">@{{ enemy.properties.kill }}</span></button>
+
+                    <button class="btn btn-danger btn-sm mr" type="button">伤害<span class="badge">@{{ enemy.damage }}</span></button>
+                    <button class="btn btn-primary btn-sm mr" type="button">攻击<span class="badge">@{{ enemy.properties.attack }}</span></button>
+                    <button class="btn btn-primary btn-sm mr" type="button">防御<span class="badge">@{{ enemy.properties.defend }}</span></button>
+                    <button class="btn btn-primary btn-sm mr" type="button">闪避<span class="badge">@{{ enemy.properties.dodge }}</span></button>
+                    <button class="btn btn-primary btn-sm mr" type="button">必杀<span class="badge">@{{ enemy.properties.kill }}</span></button>
                 </div>
-               {{-- <div class="panel-footer">
-                    <span v-for="ability in enemy.abilities" :class="'mr label label-'+ability.cls">@{{ ability.val }}</span>
+                <div class="panel-footer">
+                    <span v-for="equipment in enemy.equipments" :key="equipment.id" :title="equipment.description" class="mr label label-primary">@{{ equipment.name }}</span>
                 </div>
                 <div class="panel-body">
-                    <span v-for="equipment in enemy.equipments" :class="'mr label label-'+equipment.cls">@{{ equipment.val }}</span>
-                </div>--}}
+                    <span v-for="ability in enemy.abilities" :key="ability.id" :title="ability.description" class="mr label label-primary">@{{ ability.name }}</span>
+                </div>
             </div>
         </div>
     </div>
@@ -95,7 +96,7 @@
         var stopIntervalIndex,stopIntervalIndex2;
 
         var kill_tpl = ' 触发了必杀,';
-        var init_player = {'name':'singi','level':9,'exp':0,'hp':20,'attack':10,'defend':10,'dodge':1000,'kill':4000};
+        var init_player = {'name':'singi','level':1,'exp':0,'hp':20,'attack':10,'defend':10,'dodge':1000,'kill':4000};
 
         var app = new Vue({
             el: '#app',
@@ -117,24 +118,28 @@
                 player: {
                     curr_hp : 20,
                     damage : 0,
+                    attack : 0,
+                    defend : 0,
                     properties:{'name':'singi','level':1,'exp':0,'hp':20,'attack':10,'defend':10,'dodge':1000,'kill':4000},
                     abilities: [
-                        {'name': '格挡','type':'主动','description':'常用的防御性技能','attack':0,'defend':3},
+                        {'name': '战吼','description':'常用的防御性技能,攻击+[30%,40%],防御+[30%,40%]','type':1,'attack':[30,40],'defend':[30,40],'damage':[30,40]},
                     ],
                     equipments: [
-                        {'name': '短剑','type':'武器','description':'普通的武器','attack':1,'defend':0},
-                        {'name': '布甲','type':'护甲','description':'普通的武器','attack':0,'defend':1}
+                        {'name': '短剑','type':'武器','description':'普通的武器,攻击+[1,3]','attack':[1,3],'defend':[0,0]},
+                        {'name': '布甲','type':'护甲','description':'普通的防具,防御+[1,3]','attack':[0,0],'defend':[1,3]}
                     ]
                 },
                 enemy: {
                     curr_hp : 20,
                     damage : 0,
+                    attack : 0,
+                    defend : 0,
                     properties:{'name':'毒蛇','hp':20,'level':1,'exp':10,'attack':7,'defend':8,'dodge':1000,'kill':4000},
                     abilities: [
-                        {'name': '毒液喷刺','type':'主动','description':'本能技能','attack':0,'defend':3},
+                        {'name': '毒液喷刺','type':1,'description':'本能,攻击+[3,7]倍,防御+[1,2]倍','attack':[3,7],'defend':[1,2],'damage':[30,40]},
                     ],
                     equipments: [
-                        {'name': '毒液','type':'武器','description':'本能武器','attack':3,'defend':0},
+                        {'name': '毒液','type':2,'description':'本能,攻击+[3,7],防御+[1,2]','attack':[3,7],'defend':[1,2]},
                     ]
                 },
             },
@@ -185,15 +190,133 @@
             if (player_data) app.player = JSON.parse(player_data);
 
             find_enemy();
-            show('遇到敌人'+app.enemy.properties.name);
 
+            show('遇到敌人'+app.enemy.properties.name);
             show(app.player.properties.name + ' vs ' + app.enemy.properties.name+',战斗开始...');
+
             stopIntervalIndex = setInterval(function(){
+
+                //计算技能攻击,防御加成
+                app.player.abilities.forEach(function(v){
+                    switch (v.type){
+                        case 1:
+                            //百分比加成
+                            if (v.attack[1] > 0){
+                                app.player.attack *= (1+randomNum(v.attack[0],v.attack[1])/100);
+                                app.player.attack = Math.floor(app.player.attack);
+                            }
+                            if (v.defend[1] > 0){
+                                app.player.defend *= (1+randomNum(v.defend[0],v.defend[1])/100);
+                                app.player.defend = Math.floor(app.player.defend);
+                            }
+                            break;
+                        case 2:
+                            //倍数加成
+                            if (v.attack[1] > 0){
+                                app.player.attack *= randomNum(v.attack[0],v.attack[1]);
+                            }
+                            if (v.defend[1] > 0){
+                                app.player.defend *= randomNum(v.defend[0],v.defend[1]);
+                            }
+                            break;
+                    }
+                });
+                app.enemy.abilities.forEach(function(v){
+                    switch (v.type){
+                        case 1:
+                            //百分比加成
+                            if (v.attack[1] > 0){
+                                app.enemy.attack *= (1+randomNum(v.attack[0],v.attack[1])/100);
+                                app.enemy.attack = Math.floor(app.enemy.attack);
+                            }
+                            if (v.defend[1] > 0){
+                                app.enemy.defend *= (1+randomNum(v.defend[0],v.defend[1])/100);
+                                app.enemy.defend = Math.floor(app.enemy.defend);
+                            }
+                            break;
+                        case 2:
+                            //倍数加成
+                            if (v.attack[1] > 0){
+                                app.enemy.attack *= randomNum(v.attack[0],v.attack[1]);
+                            }
+                            if (v.defend[1] > 0){
+                                app.enemy.defend *= randomNum(v.defend[0],v.defend[1]);
+                            }
+                            break;
+                    }
+                });
+
+                //计算装备攻击,防御加成
+                app.player.equipments.forEach(function(v){
+                    if (v.attack[1] > 0){
+                        app.player.attack += randomNum(v.attack[0],v.attack[1]);
+                    }
+                    if (v.defend[1] > 0){
+                        app.player.defend += randomNum(v.defend[0],v.defend[1]);
+                    }
+                });
+                app.enemy.equipments.forEach(function(v){
+                    if (v.attack[1] > 0){
+                        app.enemy.attack += randomNum(v.attack[0],v.attack[1]);
+                    }
+                    if (v.defend[1] > 0){
+                        app.enemy.defend += randomNum(v.defend[0],v.defend[1]);
+                    }
+                });
+
                 //计算基础伤害值
                 app.player.damage = app.player.properties.attack - app.enemy.properties.defend;
                 if (app.player.damage < 0)  app.player.damage = 0;
                 app.enemy.damage = app.enemy.properties.attack - app.player.properties.defend;
                 if (app.enemy.damage < 0)  app.enemy.damage = 0;
+
+                //计算技能伤害加成
+                app.player.abilities.forEach(function(v){
+                    switch (v.type){
+                        case 1:
+                            //百分比加成
+                            if (v.damage[1] > 0){
+                                app.player.damage *= (1+randomNum(v.damage[0],v.damage[1])/100);
+                                app.player.damage = Math.floor(app.player.damage);
+                            }
+                            break;
+                        case 2:
+                            //倍数加成
+                            if (v.damage[1] > 0){
+                                app.player.damage *= randomNum(v.damage[0],v.damage[1]);
+                            }
+                            break;
+                    }
+                });
+                app.enemy.abilities.forEach(function(v){
+                    switch (v.type){
+                        case 1:
+                            //百分比加成
+                            if (v.damage[1] > 0){
+                                app.enemy.damage *= (1+randomNum(v.damage[0],v.damage[1])/100);
+                                app.enemy.damage = Math.floor(app.enemy.damage);
+                            }
+                            break;
+                        case 2:
+                            //倍数加成
+                            if (v.damage[1] > 0){
+                                app.enemy.damage *= randomNum(v.damage[0],v.damage[1]);
+                            }
+                            break;
+                    }
+                });
+
+                //计算装备伤害加成
+                /*app.player.equipments.forEach(function(v){
+                    if (v.damage[1] > 0){
+                        app.player.damage += randomNum(v.damage[0],v.damage[1]);
+                    }
+                });
+                app.enemy.equipments.forEach(function(v){
+                    if (v.damage[1] > 0){
+                        app.enemy.damage += randomNum(v.damage[0],v.damage[1]);
+                    }
+                });*/
 
                 if (app.player.damage === 0 && app.enemy.damage === 0){
                     show('旗鼓相当的对手,重新开始...');
@@ -202,6 +325,7 @@
                     fight();
                     return false;
                 }
+
                 if (app.player.curr_hp <=0 || app.enemy.curr_hp <=0){
                     show('战斗结束');
                     if (app.player.curr_hp <=0){
@@ -351,12 +475,7 @@
                 "佳钰", "佳玉", "晓庆", "一鸣", "语晨", "添池", "添昊", "雨泽", "雅晗", "雅涵",
                 "清妍", "诗悦", "嘉乐", "晨涵", "天赫", "玥傲", "佳昊", "天昊", "萌萌", "若萌"
             ];
-            var i = randomNum(0,familyNames.length);
-            var familyName = familyNames[i];
-            var j = randomNum(0,givenNames.length);
-            var givenName = givenNames[i];
-            var name = familyName + givenName;
-            return name;
+            return familyNames[randomNum(0,familyNames.length-1)] + givenNames[randomNum(0,givenNames.length-1)];
         }
     </script>
 @endsection
