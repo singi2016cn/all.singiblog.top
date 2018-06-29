@@ -13,7 +13,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     @{{ player.properties.name }}
-                    <span class="badge">@{{ player.properties.level }}</span>
+                    <span class="badge" title="等级">@{{ player.properties.level }}</span>
+                    <span class="badge" :title="player.phyle.description">@{{ player.phyle.name }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="progress">
@@ -49,7 +50,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     @{{ enemy.properties.name }}
-                    <span class="badge">@{{ enemy.properties.level }}</span>
+                    <span class="badge" title="等级">@{{ enemy.properties.level }}</span>
+                    <span class="badge" :title="enemy.phyle.description">@{{ enemy.phyle.name }}</span>
                 </div>
                 <div class="panel-body">
                     <div class="progress">
@@ -120,6 +122,7 @@
                     damage : 0,
                     attack : 0,
                     defend : 0,
+                    phyle : {'name':'人类','description':'最常见的种族，各项能力都比较均衡','hp':10,'attack':5,'defend':5},
                     properties:{'name':'singi','level':1,'exp':0,'hp':20,'attack':10,'defend':10,'dodge':1000,'kill':4000},
                     abilities: [
                         {'name': '战吼','description':'常用的防御性技能,攻击+[30%,40%],防御+[30%,40%]','type':1,'attack':[30,40],'defend':[30,40],'damage':[30,40]},
@@ -134,6 +137,7 @@
                     damage : 0,
                     attack : 0,
                     defend : 0,
+                    phyle : {'name':'人类','description':'最常见的种族，各项能力都比较均衡','hp':10,'attack':5,'defend':5},
                     properties:{'name':'毒蛇','hp':20,'level':1,'exp':10,'attack':7,'defend':8,'dodge':1000,'kill':4000},
                     abilities: [
                         {'name': '毒液喷刺','type':1,'description':'本能,攻击+[3,7]倍,防御+[1,2]倍','attack':[3,7],'defend':[1,2],'damage':[30,40]},
@@ -345,9 +349,9 @@
                             }
                             app.player.properties.exp = is_level_up;
 
-                            app.player.properties.attack += 5;
-                            app.player.properties.defend += 5;
-                            level_des = ' 升级了,现在的等级是'+app.player.properties.level+',血量+10,攻击+5,防御+5';
+                            app.player.properties.attack += app.player.phyle.attack;
+                            app.player.properties.defend += app.player.phyle.defend;
+                            level_des = ' 升级了,现在的等级是'+app.player.properties.level+',血量+'+app.player.phyle.hp+',攻击+'+app.player.phyle.attack+',防御+'+app.player.phyle.defend;
                         }else{
                             app.player.properties.exp = is_level_up;
                         }
@@ -359,7 +363,7 @@
                         show('正在休息...('+count_down+')');
                         count_down -= 1;
                         if (count_down <=0){
-                            app.player.properties.hp +=10;
+                            app.player.properties.hp +=app.player.phyle.hp;
                             app.player.curr_hp = app.player.properties.hp;
                             localStorage.setItem('player',JSON.stringify(app.player));
                             //TODO 更新服务器数据
