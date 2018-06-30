@@ -173,6 +173,7 @@
                     properties:{'name':'毒蛇','hp':20,'level':1,'exp':10,'attack':7,'defend':8,'dodge':1000,'kill':4000},
                     abilities: [
                         {'name': '战意','description':'本能,伤害+[1,2]倍','type':2,'damage':[30,40]},
+                        {'name': '妖术','description':'一种妖术,伤害+[80,90]','type':1,'damage':[80,90]},
                     ],
                     equipments: [
                         {'name': '短剑','type':1,'description':'普通的武器,攻击+[1,3]','attack':[1,3],'defend':[0,0]},
@@ -320,6 +321,7 @@
                     if (app.player.damage < 0)  app.player.damage = 0;
                     //计算技能伤害加成
                     var p_ability = app.player.abilities[randomNum(0,app.player.abilities.length-1)];
+                    var p_ability_des = ' 使用了技能 '+p_ability.name+' ';
                     switch (p_ability.type){
                         case 1:
                             //百分比加成
@@ -343,7 +345,7 @@
                     }
                     //玩家攻击
                     if (app.player.hp > 0) {
-                        show(app.player.properties.name + p_kill_des + ' 攻击了 ' + app.enemy.properties.name + ' 1次,造成了 ' + app.player.damage + ' 点伤害');
+                        show(app.player.properties.name+ p_ability_des + p_kill_des + ' 攻击了 ' + app.enemy.properties.name + ' 1次,造成了 ' + app.player.damage + ' 点伤害');
                         app.enemy.hp -= app.player.damage;
                         if (app.enemy.hp < 0) app.enemy.hp = 0;
                     }
@@ -372,6 +374,7 @@
                     if (app.enemy.damage < 0)  app.enemy.damage = 0;
                     //计算技能伤害加成
                     var e_ability = app.enemy.abilities[randomNum(0,app.enemy.abilities.length-1)];
+                    var e_ability_des = ' 使用了技能 '+e_ability.name+' ';
                     switch (e_ability.type){
                         case 1:
                             //百分比加成
@@ -395,7 +398,7 @@
                     }
                     //怪物攻击
                     if (app.enemy.hp > 0){
-                        show(app.enemy.properties.name + e_kill_des +' 攻击了 ' + app.player.properties.name + ' 1次,造成了 ' + app.enemy.damage + ' 点伤害');
+                        show(app.enemy.properties.name + e_ability_des + e_kill_des +' 攻击了 ' + app.player.properties.name + ' 1次,造成了 ' + app.enemy.damage + ' 点伤害');
                         app.player.hp -= app.enemy.damage;
                         if (app.player.hp < 0) app.player.hp = 0;
                     }
