@@ -46,8 +46,18 @@
             </div>
         </div>
         <div class="col-md-2">
+            <div class="panel panel-default"><div class="panel-body text-center" style="font-size: 3em">VS</div></div>
             <div class="panel panel-default">
-                <div class="panel-body text-center" style="font-size: 3em">VS</div>
+                <div class="panel-heading">
+                    @{{ place_select_obj.name }}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown"><span class="caret"></span></button>
+                        <ul class="dropdown-menu">
+                            <li v-for="(item,k) in this.place" :key="item.id"><a href="#" @click="place_select(k)">@{{ item.name }}</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-body">@{{ place_select_obj.description }}</div>
             </div>
         </div>
         <div class="col-md-5">
@@ -129,6 +139,11 @@
                     {'level':11,'exp':1113550},
                 ],
                 des : [],
+                place : [
+                    {'name':'初始之镇','description':'玩家游戏开始的地方','damage':1},
+                    {'name':'荒漠平原','description':'一片荒凉的土地，马贼纵横','damage':10},
+                ],
+                place_select_obj : {'name':'初始之镇','description':'玩家游戏开始的地方','damage':1},
                 player: {
                     hp : 20,
                     damage : 0,
@@ -210,6 +225,9 @@
                 e_is_dodge:function(){
                     return (randomNum(0,10000) <= app.enemy.properties.dodge);
                 },
+                place_select : function(i){
+                    this.place_select_obj = this.place[i];
+                }
             }
         });
 
@@ -300,6 +318,23 @@
                     //计算基础伤害值
                     app.player.damage = app.player.attack - app.enemy.defend;
                     if (app.player.damage < 0)  app.player.damage = 0;
+                    //计算技能伤害加成
+                    var p_ability = app.player.abilities[randomNum(0,app.player.abilities.length-1)];
+                    switch (p_ability.type){
+                        case 1:
+                            //百分比加成
+                            if (p_ability.damage[1] > 0){
+                                app.player.damage *= (1+randomNum(p_ability.damage[0],p_ability.damage[1])/100);
+                                app.player.damage = Math.floor(app.player.damage);
+                            }
+                            break;
+                        case 2:
+                            //倍数加成
+                            if (p_ability.damage[1] > 0){
+                                app.player.damage *= randomNum(p_ability.damage[0],p_ability.damage[1]);
+                            }
+                            break;
+                    }
                     //计算玩家必杀
                     var p_kill_des = '';
                     if (randomNum(0, 10000) <= app.player.properties.kill) {
@@ -335,6 +370,23 @@
                     //计算基础伤害值
                     app.enemy.damage = app.enemy.attack - app.player.defend;
                     if (app.enemy.damage < 0)  app.enemy.damage = 0;
+                    //计算技能伤害加成
+                    var e_ability = app.enemy.abilities[randomNum(0,app.enemy.abilities.length-1)];
+                    switch (e_ability.type){
+                        case 1:
+                            //百分比加成
+                            if (e_ability.damage[1] > 0){
+                                app.enemy.damage *= (1+randomNum(e_ability.damage[0],e_ability.damage[1])/100);
+                                app.enemy.damage = Math.floor(app.enemy.damage);
+                            }
+                            break;
+                        case 2:
+                            //倍数加成
+                            if (e_ability.damage[1] > 0){
+                                app.enemy.damage *= randomNum(e_ability.damage[0],e_ability.damage[1]);
+                            }
+                            break;
+                    }
                     //计算怪物必杀
                     var e_kill_des = '';
                     if (randomNum(0,10000) <= app.enemy.properties.kill){
@@ -363,115 +415,6 @@
                     fight();
                     return false;
                 }
-
-                //计算技能攻击,防御加成
-                /*app.player.abilities.forEach(function(v){
-                    switch (v.type){
-                        case 1:
-                            //百分比加成
-                            if (v.attack[1] > 0){
-                                app.player.attack *= (1+randomNum(v.attack[0],v.attack[1])/100);
-                                app.player.attack = Math.floor(app.player.attack);
-                            }
-                            if (v.defend[1] > 0){
-                                app.player.defend *= (1+randomNum(v.defend[0],v.defend[1])/100);
-                                app.player.defend = Math.floor(app.player.defend);
-                            }
-                            break;
-                        case 2:
-                            //倍数加成
-                            if (v.attack[1] > 0){
-                                app.player.attack *= randomNum(v.attack[0],v.attack[1]);
-                            }
-                            if (v.defend[1] > 0){
-                                app.player.defend *= randomNum(v.defend[0],v.defend[1]);
-                            }
-                            break;
-                    }
-                });
-                app.enemy.abilities.forEach(function(v){
-                    switch (v.type){
-                        case 1:
-                            //百分比加成
-                            if (v.attack[1] > 0){
-                                app.enemy.attack *= (1+randomNum(v.attack[0],v.attack[1])/100);
-                                app.enemy.attack = Math.floor(app.enemy.attack);
-                            }
-                            if (v.defend[1] > 0){
-                                app.enemy.defend *= (1+randomNum(v.defend[0],v.defend[1])/100);
-                                app.enemy.defend = Math.floor(app.enemy.defend);
-                            }
-                            break;
-                        case 2:
-                            //倍数加成
-                            if (v.attack[1] > 0){
-                                app.enemy.attack *= randomNum(v.attack[0],v.attack[1]);
-                            }
-                            if (v.defend[1] > 0){
-                                app.enemy.defend *= randomNum(v.defend[0],v.defend[1]);
-                            }
-                            break;
-                    }
-                });*/
-
-                //计算装备攻击,防御加成
-                /*
-                app.enemy.equipments.forEach(function(v){
-                    if (v.attack[1] > 0){
-                        app.enemy.attack += randomNum(v.attack[0],v.attack[1]);
-                    }
-                    if (v.defend[1] > 0){
-                        app.enemy.defend += randomNum(v.defend[0],v.defend[1]);
-                    }
-                });*/
-
-                //计算技能伤害加成
-                /*app.player.abilities.forEach(function(v){
-                    switch (v.type){
-                        case 1:
-                            //百分比加成
-                            if (v.damage[1] > 0){
-                                app.player.damage *= (1+randomNum(v.damage[0],v.damage[1])/100);
-                                app.player.damage = Math.floor(app.player.damage);
-                            }
-                            break;
-                        case 2:
-                            //倍数加成
-                            if (v.damage[1] > 0){
-                                app.player.damage *= randomNum(v.damage[0],v.damage[1]);
-                            }
-                            break;
-                    }
-                });
-                app.enemy.abilities.forEach(function(v){
-                    switch (v.type){
-                        case 1:
-                            //百分比加成
-                            if (v.damage[1] > 0){
-                                app.enemy.damage *= (1+randomNum(v.damage[0],v.damage[1])/100);
-                                app.enemy.damage = Math.floor(app.enemy.damage);
-                            }
-                            break;
-                        case 2:
-                            //倍数加成
-                            if (v.damage[1] > 0){
-                                app.enemy.damage *= randomNum(v.damage[0],v.damage[1]);
-                            }
-                            break;
-                    }
-                });*/
-
-                //计算装备伤害加成
-                /*app.player.equipments.forEach(function(v){
-                    if (v.damage[1] > 0){
-                        app.player.damage += randomNum(v.damage[0],v.damage[1]);
-                    }
-                });
-                app.enemy.equipments.forEach(function(v){
-                    if (v.damage[1] > 0){
-                        app.enemy.damage += randomNum(v.damage[0],v.damage[1]);
-                    }
-                });*/
             },1000);
         }
 
