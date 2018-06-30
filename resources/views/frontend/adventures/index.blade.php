@@ -24,10 +24,14 @@
                     </div>
                     <div class="progress">
                         <div :class="'progress-bar progress-bar-'+player_cls_percentage+' progress-bar-striped'" :style="'width: '+player_hp_percentage+'%'">
-                            <span>@{{ player.curr_hp }}/@{{ player.properties.hp }}</span>
+                            <span>@{{ player.hp }}/@{{ player.properties.hp }}</span>
                         </div>
                     </div>
-                    <button class="btn btn-danger btn-sm mr" type="button">伤害<span class="badge">@{{ player.damage }}</span></button>
+                    <div style="margin-bottom: 15px">
+                        <button class="btn btn-danger btn-sm mr" type="button">伤害<span class="badge">@{{ player.damage }}</span></button>
+                        <button class="btn btn-danger btn-sm mr" type="button">攻击<span class="badge">@{{ player.attack }}</span></button>
+                        <button class="btn btn-danger btn-sm mr" type="button">防御<span class="badge">@{{ player.defend }}</span></button>
+                    </div>
                     <button class="btn btn-primary btn-sm mr" type="button">攻击<span class="badge">@{{ player.properties.attack }}</span></button>
                     <button class="btn btn-primary btn-sm mr" type="button">防御<span class="badge">@{{ player.properties.defend }}</span></button>
                     <button class="btn btn-primary btn-sm mr" type="button">闪避<span class="badge">@{{ player.properties.dodge }}</span></button>
@@ -37,7 +41,7 @@
                     <span v-for="equipment in player.equipments" :key="equipment.id" :title="equipment.description" class="mr label label-primary">@{{ equipment.name }}</span>
                 </div>
                 <div class="panel-body">
-                    <span v-for="ability in player.abilities" :key="ability.id" :title="ability.description" class="mr label label-primary">@{{ ability.name }}</span>
+                    <span v-for="ability in player.abilities" :key="ability.id" :title="ability.description" class="mr label label-warning">@{{ ability.name }}</span>
                 </div>
             </div>
         </div>
@@ -55,12 +59,20 @@
                 </div>
                 <div class="panel-body">
                     <div class="progress">
-                        <div :class="'progress-bar progress-bar-'+enemy_cls_percentage+' progress-bar-striped'" :style="'width: '+enemy_hp_percentage+'%'">
-                            <span>@{{ enemy.curr_hp }}/@{{ enemy.properties.hp }}</span>
+                        <div class="progress-bar progress-bar-primary progress-bar-striped" :style="'width: '+enemy_exp_percentage+'%'">
+                            <span>@{{ enemy.properties.exp }}/@{{ enemy.properties.exp }}</span>
                         </div>
                     </div>
-
-                    <button class="btn btn-danger btn-sm mr" type="button">伤害<span class="badge">@{{ enemy.damage }}</span></button>
+                    <div class="progress">
+                        <div :class="'progress-bar progress-bar-'+enemy_cls_percentage+' progress-bar-striped'" :style="'width: '+enemy_hp_percentage+'%'">
+                            <span>@{{ enemy.hp }}/@{{ enemy.properties.hp }}</span>
+                        </div>
+                    </div>
+                    <div style="margin-bottom: 15px">
+                        <button class="btn btn-danger btn-sm mr" type="button">伤害<span class="badge">@{{ enemy.damage }}</span></button>
+                        <button class="btn btn-danger btn-sm mr" type="button">攻击<span class="badge">@{{ enemy.attack }}</span></button>
+                        <button class="btn btn-danger btn-sm mr" type="button">防御<span class="badge">@{{ enemy.defend }}</span></button>
+                    </div>
                     <button class="btn btn-primary btn-sm mr" type="button">攻击<span class="badge">@{{ enemy.properties.attack }}</span></button>
                     <button class="btn btn-primary btn-sm mr" type="button">防御<span class="badge">@{{ enemy.properties.defend }}</span></button>
                     <button class="btn btn-primary btn-sm mr" type="button">闪避<span class="badge">@{{ enemy.properties.dodge }}</span></button>
@@ -70,7 +82,7 @@
                     <span v-for="equipment in enemy.equipments" :key="equipment.id" :title="equipment.description" class="mr label label-primary">@{{ equipment.name }}</span>
                 </div>
                 <div class="panel-body">
-                    <span v-for="ability in enemy.abilities" :key="ability.id" :title="ability.description" class="mr label label-primary">@{{ ability.name }}</span>
+                    <span v-for="ability in enemy.abilities" :key="ability.id" :title="ability.description" class="mr label label-warning">@{{ ability.name }}</span>
                 </div>
             </div>
         </div>
@@ -98,7 +110,7 @@
         var stopIntervalIndex,stopIntervalIndex2;
 
         var kill_tpl = ' 触发了必杀,';
-        var init_player = {'name':'singi','level':1,'exp':0,'hp':20,'attack':10,'defend':10,'dodge':1000,'kill':4000};
+        var init_player = {'name':'singi','level':1,'exp':0,'hp':20,'attack':10,'defend':10,'dodge':5000,'kill':4000};
 
         var app = new Vue({
             el: '#app',
@@ -118,42 +130,48 @@
                 ],
                 des : [],
                 player: {
-                    curr_hp : 20,
+                    hp : 20,
                     damage : 0,
                     attack : 0,
                     defend : 0,
+                    passive_abilities:[
+                        {'name':'闪避','attr':'dodge','description':'免受1次伤害','val':1000},
+                        {'name':'必杀','attr':'kill','description':'造成3倍伤害','val':1000},
+                    ],
                     phyle : {'name':'人类','description':'最常见的种族，各项能力都比较均衡','hp':10,'attack':5,'defend':5},
-                    properties:{'name':'singi','level':1,'exp':0,'hp':20,'attack':10,'defend':10,'dodge':1000,'kill':4000},
+                    properties:{'name':'singi','level':1,'exp':0,'hp':20,'attack':10,'defend':10,'dodge':5000,'kill':4000},
                     abilities: [
-                        {'name': '战吼','description':'常用的防御性技能,攻击+[30%,40%],防御+[30%,40%]','type':1,'attack':[30,40],'defend':[30,40],'damage':[30,40]},
+                        {'name': '战吼','description':'常用的防御性技能,伤害+[30%,40%]','type':1,'damage':[30,40]},
                     ],
                     equipments: [
-                        {'name': '短剑','type':'武器','description':'普通的武器,攻击+[1,3]','attack':[1,3],'defend':[0,0]},
-                        {'name': '布甲','type':'护甲','description':'普通的防具,防御+[1,3]','attack':[0,0],'defend':[1,3]}
+                        {'name': '短剑','type':1,'description':'普通的武器,攻击+[1,3]','attack':[1,3],'defend':[0,0]},
+                        {'name': '布甲','type':2,'description':'普通的防具,防御+[1,3]','attack':[0,0],'defend':[1,3]}
                     ]
                 },
                 enemy: {
-                    curr_hp : 20,
+                    hp : 20,
                     damage : 0,
                     attack : 0,
                     defend : 0,
+                    exp : 10,
                     phyle : {'name':'人类','description':'最常见的种族，各项能力都比较均衡','hp':10,'attack':5,'defend':5},
                     properties:{'name':'毒蛇','hp':20,'level':1,'exp':10,'attack':7,'defend':8,'dodge':1000,'kill':4000},
                     abilities: [
-                        {'name': '毒液喷刺','type':1,'description':'本能,攻击+[3,7]倍,防御+[1,2]倍','attack':[3,7],'defend':[1,2],'damage':[30,40]},
+                        {'name': '战意','description':'本能,伤害+[1,2]倍','type':2,'damage':[30,40]},
                     ],
                     equipments: [
-                        {'name': '毒液','type':2,'description':'本能,攻击+[3,7],防御+[1,2]','attack':[3,7],'defend':[1,2]},
+                        {'name': '短剑','type':1,'description':'普通的武器,攻击+[1,3]','attack':[1,3],'defend':[0,0]},
+                        {'name': '布甲','type':2,'description':'普通的防具,防御+[1,3]','attack':[0,0],'defend':[1,3]}
                     ]
                 },
             },
             computed:{
                 player_hp_percentage: function () {
-                    return this.player.curr_hp/this.player.properties.hp*100;
+                    return this.player.hp/this.player.properties.hp*100;
                 },
                 player_cls_percentage: function () {
                     var ret = 'danger';
-                    var percentage = this.player.curr_hp/this.player.properties.hp*100;
+                    var percentage = this.player.hp/this.player.properties.hp*100;
                     if (percentage > 70 && percentage <= 100) {
                         ret = 'success';
                     } else if (percentage > 30 && percentage <= 70) {
@@ -167,11 +185,11 @@
                     return this.player.properties.exp/(this.level_setting[this.player.properties.level].exp)*100;
                 },
                 enemy_hp_percentage: function () {
-                    return this.enemy.curr_hp/this.enemy.properties.hp*100;
+                    return this.enemy.hp/this.enemy.properties.hp*100;
                 },
                 enemy_cls_percentage: function () {
                     var ret = 'danger';
-                    var percentage = this.enemy.curr_hp/this.enemy.properties.hp*100;
+                    var percentage = this.enemy.hp/this.enemy.properties.hp*100;
                     if (percentage > 70 && percentage <= 100) {
                         ret = 'success';
                     } else if (percentage > 30 && percentage <= 70) {
@@ -181,9 +199,17 @@
                     }
                     return ret;
                 },
+                enemy_exp_percentage:function(){
+                    return this.enemy.exp/this.enemy.properties.exp*100;
+                }
             },
-            method:{
-
+            methods:{
+                p_is_dodge:function(){
+                    return (randomNum(0,10000) <= app.player.properties.dodge);
+                },
+                e_is_dodge:function(){
+                    return (randomNum(0,10000) <= app.enemy.properties.dodge);
+                },
             }
         });
 
@@ -199,9 +225,147 @@
             show(app.player.properties.name + ' vs ' + app.enemy.properties.name+',战斗开始...');
 
             stopIntervalIndex = setInterval(function(){
+                //结束计算
+                if (app.player.hp <=0 || app.enemy.hp <=0){
+                    show('战斗结束');
+                    if (app.player.hp <=0){
+                        show(app.player.properties.name + '被击败了');
+                    }
+                    if (app.enemy.hp <=0) {
+                        var is_level_up = app.player.properties.exp + app.enemy.properties.exp;
+                        //是否升级
+                        var level_des = '';
+                        if (is_level_up >= app.level_setting[app.player.properties.level].exp){
+                            //经验值先加满
+                            app.player.properties.exp = app.level_setting[app.player.properties.level].exp;
+                            app.player.properties.level +=1;
+                            if (app.player.properties.level === app.level_setting[app.level_setting.length-2].level) {
+                                end();
+                                return false;
+                            }
+                            app.player.properties.exp = is_level_up;
+
+                            app.player.properties.attack += app.player.phyle.attack;
+                            app.player.properties.defend += app.player.phyle.defend;
+                            level_des = ' 升级了,现在的等级是'+app.player.properties.level+',血量+'+app.player.phyle.hp+',攻击+'+app.player.phyle.attack+',防御+'+app.player.phyle.defend;
+                        }else{
+                            app.player.properties.exp = is_level_up;
+                        }
+                        app.enemy.exp = 0;
+                        show(app.player.properties.name + '胜利了,获得经验值 '+app.enemy.properties.exp+level_des);
+                    }
+
+                    var count_down = 3;
+                    stopIntervalIndex2 = setInterval(function(){
+                        show('正在休息...('+count_down+')');
+                        count_down -= 1;
+                        if (count_down <=0){
+                            app.player.properties.hp +=app.player.phyle.hp;
+                            app.player.hp = app.player.properties.hp;
+                            app.player.damage = 0;
+                            app.player.attack = 0;
+                            app.player.defend = 0;
+                            app.enemy.damage = 0;
+                            app.enemy.attack = 0;
+                            app.enemy.defend = 0;
+                            localStorage.setItem('player',JSON.stringify(app.player));
+                            //TODO 更新服务器数据
+                            clear_show();
+                            clearInterval(stopIntervalIndex2);
+                            fight();
+                        }
+                    },1000);
+                    clearInterval(stopIntervalIndex);
+                    return false;
+                }
+
+                //计算怪物闪避
+                if (app.e_is_dodge()) {
+                    show(app.player.properties.name +' 攻击了 ' + app.enemy.properties.name + ' 1次,但是被闪避');
+                }else{
+                    app.player.attack = app.player.properties.attack;
+                    //计算装备加成
+                    app.player.equipments.forEach(function(v){
+                        if (v.attack[1] > 0){
+                            app.player.attack += randomNum(v.attack[0],v.attack[1]);
+                        }
+                    });
+                    app.enemy.defend = app.enemy.properties.defend;
+                    //计算装备加成
+                    app.enemy.equipments.forEach(function(v){
+                        if (v.defend[1] > 0){
+                            app.enemy.defend += randomNum(v.defend[0],v.defend[1]);
+                        }
+                    });
+                    //计算基础伤害值
+                    app.player.damage = app.player.attack - app.enemy.defend;
+                    if (app.player.damage < 0)  app.player.damage = 0;
+                    //计算玩家必杀
+                    var p_kill_des = '';
+                    if (randomNum(0, 10000) <= app.player.properties.kill) {
+                        app.player.damage *= 3;
+                        p_kill_des = kill_tpl;
+                    }
+                    //玩家攻击
+                    if (app.player.hp > 0) {
+                        show(app.player.properties.name + p_kill_des + ' 攻击了 ' + app.enemy.properties.name + ' 1次,造成了 ' + app.player.damage + ' 点伤害');
+                        app.enemy.hp -= app.player.damage;
+                        if (app.enemy.hp < 0) app.enemy.hp = 0;
+                    }
+                }
+
+                //计算玩家闪避
+                if (app.p_is_dodge()) {
+                    show(app.enemy.properties.name +' 攻击了 ' + app.player.properties.name + ' 1次,但是被闪避');
+                }else{
+                    app.enemy.attack = app.enemy.properties.attack;
+                    //计算装备加成
+                    app.enemy.equipments.forEach(function(v){
+                        if (v.attack[1] > 0){
+                            app.enemy.attack += randomNum(v.attack[0],v.attack[1]);
+                        }
+                    });
+                    app.player.defend = app.player.properties.defend;
+                    //计算装备加成
+                    app.player.equipments.forEach(function(v){
+                        if (v.defend[1] > 0){
+                            app.player.defend += randomNum(v.defend[0],v.defend[1]);
+                        }
+                    });
+                    //计算基础伤害值
+                    app.enemy.damage = app.enemy.attack - app.player.defend;
+                    if (app.enemy.damage < 0)  app.enemy.damage = 0;
+                    //计算怪物必杀
+                    var e_kill_des = '';
+                    if (randomNum(0,10000) <= app.enemy.properties.kill){
+                        app.enemy.damage *= 3;
+                        e_kill_des = kill_tpl;
+                    }
+                    //怪物攻击
+                    if (app.enemy.hp > 0){
+                        show(app.enemy.properties.name + e_kill_des +' 攻击了 ' + app.player.properties.name + ' 1次,造成了 ' + app.enemy.damage + ' 点伤害');
+                        app.player.hp -= app.enemy.damage;
+                        if (app.player.hp < 0) app.player.hp = 0;
+                    }
+                }
+
+                //如果双方伤害都为0，跳过此回合
+                if (app.player.damage === 0 && app.enemy.damage === 0){
+                    show('旗鼓相当的对手,重新开始...');
+                    clear_show();
+                    clearInterval(stopIntervalIndex);
+                    app.player.damage = 0;
+                    app.player.attack = 0;
+                    app.player.defend = 0;
+                    app.enemy.damage = 0;
+                    app.enemy.attack = 0;
+                    app.enemy.defend = 0;
+                    fight();
+                    return false;
+                }
 
                 //计算技能攻击,防御加成
-                app.player.abilities.forEach(function(v){
+                /*app.player.abilities.forEach(function(v){
                     switch (v.type){
                         case 1:
                             //百分比加成
@@ -248,17 +412,10 @@
                             }
                             break;
                     }
-                });
+                });*/
 
                 //计算装备攻击,防御加成
-                app.player.equipments.forEach(function(v){
-                    if (v.attack[1] > 0){
-                        app.player.attack += randomNum(v.attack[0],v.attack[1]);
-                    }
-                    if (v.defend[1] > 0){
-                        app.player.defend += randomNum(v.defend[0],v.defend[1]);
-                    }
-                });
+                /*
                 app.enemy.equipments.forEach(function(v){
                     if (v.attack[1] > 0){
                         app.enemy.attack += randomNum(v.attack[0],v.attack[1]);
@@ -266,16 +423,10 @@
                     if (v.defend[1] > 0){
                         app.enemy.defend += randomNum(v.defend[0],v.defend[1]);
                     }
-                });
-
-                //计算基础伤害值
-                app.player.damage = app.player.properties.attack - app.enemy.properties.defend;
-                if (app.player.damage < 0)  app.player.damage = 0;
-                app.enemy.damage = app.enemy.properties.attack - app.player.properties.defend;
-                if (app.enemy.damage < 0)  app.enemy.damage = 0;
+                });*/
 
                 //计算技能伤害加成
-                app.player.abilities.forEach(function(v){
+                /*app.player.abilities.forEach(function(v){
                     switch (v.type){
                         case 1:
                             //百分比加成
@@ -308,7 +459,7 @@
                             }
                             break;
                     }
-                });
+                });*/
 
                 //计算装备伤害加成
                 /*app.player.equipments.forEach(function(v){
@@ -321,111 +472,35 @@
                         app.enemy.damage += randomNum(v.damage[0],v.damage[1]);
                     }
                 });*/
-
-                if (app.player.damage === 0 && app.enemy.damage === 0){
-                    show('旗鼓相当的对手,重新开始...');
-                    clear_show();
-                    clearInterval(stopIntervalIndex);
-                    fight();
-                    return false;
-                }
-
-                if (app.player.curr_hp <=0 || app.enemy.curr_hp <=0){
-                    show('战斗结束');
-                    if (app.player.curr_hp <=0){
-                        show(app.player.properties.name + '被击败了');
-                    }
-                    if (app.enemy.curr_hp <=0) {
-                        var is_level_up = app.player.properties.exp + app.enemy.properties.exp;
-                        //是否升级
-                        var level_des = '';
-                        if (is_level_up >= app.level_setting[app.player.properties.level].exp){
-                            //经验值先加满
-                            app.player.properties.exp = app.level_setting[app.player.properties.level].exp;
-                            app.player.properties.level +=1;
-                            if (app.player.properties.level === app.level_setting[app.level_setting.length-2].level) {
-                                end();
-                                return false;
-                            }
-                            app.player.properties.exp = is_level_up;
-
-                            app.player.properties.attack += app.player.phyle.attack;
-                            app.player.properties.defend += app.player.phyle.defend;
-                            level_des = ' 升级了,现在的等级是'+app.player.properties.level+',血量+'+app.player.phyle.hp+',攻击+'+app.player.phyle.attack+',防御+'+app.player.phyle.defend;
-                        }else{
-                            app.player.properties.exp = is_level_up;
-                        }
-                        show(app.player.properties.name + '胜利了,获得经验值 '+app.enemy.properties.exp+level_des);
-                    }
-
-                    var count_down = 3;
-                    stopIntervalIndex2 = setInterval(function(){
-                        show('正在休息...('+count_down+')');
-                        count_down -= 1;
-                        if (count_down <=0){
-                            app.player.properties.hp +=app.player.phyle.hp;
-                            app.player.curr_hp = app.player.properties.hp;
-                            localStorage.setItem('player',JSON.stringify(app.player));
-                            //TODO 更新服务器数据
-                            clear_show();
-                            clearInterval(stopIntervalIndex2);
-                            fight();
-                        }
-                    },1000);
-                    clearInterval(stopIntervalIndex);
-                    return false;
-                }
-
-                //计算闪避
-                if (randomNum(0,10000) <= app.player.properties.dodge) {
-                    show(app.player.properties.name +' 攻击了 ' + app.enemy.properties.name + ' 1次,但是被闪避');
-                }else{
-                    //计算必杀
-                    var p_kill_des = '';
-                    if (randomNum(0, 10000) <= app.player.properties.kill) {
-                        app.player.damage *= 3;
-                        p_kill_des = kill_tpl;
-                    }
-                    if (app.player.curr_hp > 0) {
-                        show(app.player.properties.name + p_kill_des + ' 攻击了 ' + app.enemy.properties.name + ' 1次,造成了 ' + app.player.damage + ' 点伤害');
-                        app.enemy.curr_hp -= app.player.damage;
-                        if (app.enemy.curr_hp < 0) app.enemy.curr_hp = 0;
-                    }
-                }
-
-                if (randomNum(0,10000) <= app.enemy.properties.dodge) {
-                    show(app.enemy.properties.name +' 攻击了 ' + app.player.properties.name + ' 1次,但是被闪避');
-                }else{
-                    var e_kill_des = '';
-                    if (randomNum(0,10000) <= app.enemy.properties.kill){
-                        app.enemy.damage *= 3;
-                        e_kill_des = kill_tpl;
-                    }
-
-                    if (app.enemy.curr_hp > 0){
-                        show(app.enemy.properties.name + e_kill_des +' 攻击了 ' + app.player.properties.name + ' 1次,造成了 ' + app.enemy.damage + ' 点伤害');
-                        app.player.curr_hp -= app.enemy.damage;
-                        if (app.player.curr_hp < 0) app.player.curr_hp = 0;
-                    }
-                }
-
             },1000);
         }
 
         fight();
 
         function stop_fight(){
+            app.player.damage = 0;
+            app.player.attack = 0;
+            app.player.defend = 0;
+            app.enemy.damage = 0;
+            app.enemy.attack = 0;
+            app.enemy.defend = 0;
             clearInterval(stopIntervalIndex);
             clearInterval(stopIntervalIndex2);
             app.player.properties = init_player;
             find_enemy();
-            app.player.curr_hp = app.player.properties.hp;
+            app.player.hp = app.player.properties.hp;
             clear_show();
             localStorage.clear();
             fight();
         }
 
         function end() {
+            app.player.damage = 0;
+            app.player.attack = 0;
+            app.player.defend = 0;
+            app.enemy.damage = 0;
+            app.enemy.attack = 0;
+            app.enemy.defend = 0;
             clearInterval(stopIntervalIndex);
             clearInterval(stopIntervalIndex2);
             clear_show();
@@ -442,10 +517,10 @@
         function find_enemy(){
             app.enemy.properties.name = getName();
             app.enemy.properties.level = randomNum(1,app.player.properties.level+5);
-            app.enemy.properties.exp = randomNum(1,app.level_setting[app.player.properties.level].exp);
-            app.enemy.curr_hp = app.enemy.properties.hp = randomNum(1,app.player.properties.hp+10);
-            app.enemy.properties.attack = randomNum(1,app.player.properties.attack+10);
-            app.enemy.properties.defend = randomNum(1,app.player.properties.defend+10);
+            app.enemy.exp = app.enemy.properties.exp = randomNum(1,app.level_setting[app.player.properties.level].exp);
+            app.enemy.hp = app.enemy.properties.hp = randomNum(1,app.player.properties.hp+10);
+            app.enemy.properties.attack = randomNum(1,app.player.properties.attack+5);
+            app.enemy.properties.defend = randomNum(1,app.player.properties.defend+5);
         }
         //生成从[min,max]的随机数
         function randomNum(min, max) {
