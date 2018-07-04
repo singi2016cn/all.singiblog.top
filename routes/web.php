@@ -25,14 +25,19 @@ Route::post('crosswords/check','Frontend\CrosswordsController@check')->name('cro
 
 Route::Resource('adventures','Frontend\AdventuresController');
 
+Route::Resource('sentences','Frontend\SentencesController');
+
 Route::get('/backend','BackendController@index')->name('backend');
 Route::prefix('backend')->name('backend.')->group(function () {
     Route::get('login','Backend\LoginController@showLoginForm')->name('showLoginForm');
     Route::post('login','Backend\LoginController@login')->name('login');
     Route::post('logout', 'Backend\LoginController@logout')->name('logout');
+
     Route::Resource('crosswords','Backend\CrosswordsController');
     Route::get('crosswords_counts/crosswords_create/{id}','Backend\CrosswordsCountsController@crosswords_create')->name('crosswords_counts.crosswords_create');
     Route::Resource('crosswords_counts','Backend\CrosswordsCountsController');
+
+    Route::Resource('sentences','Backend\SentencesController');
 });
 
 Route::Resource('market','Frontend\MarketController');

@@ -32,6 +32,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="{{route('market.index')}}">广场</a></li>
                         <li><a href="{{route('crosswords.index')}}">填字游戏</a></li>
+                        <li><a href="{{route('sentences.index')}}">句心</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @guest

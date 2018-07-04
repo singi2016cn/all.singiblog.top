@@ -4,40 +4,35 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            @component('component.alert') {{ session('alert_tpl') ?? 'success' }} @endcomponent
+            @component('component.alert') success @endcomponent
             <div class="panel panel-default">
                 <div class="panel-heading">
                     填字游戏
-                    <a style="float: right" href="{{ route('backend.crosswords.create') }}">创建</a>
+                    <a style="float: right" href="{{ route('backend.sentences.create') }}">创建</a>
                 </div>
                 <table class="table table-striped table-hover">
                   <tr>
                     <th>ID</th>
-                    <th>所属号数</th>
-                    <th>答案</th>
-                    <th>提示</th>
-                    <th>横/竖</th>
-                    <th>序号</th>
+                    <th>句子</th>
+                    <th>作者</th>
+                    <th>书籍</th>
                     <th>时间</th>
                     <th>操作</th>
                   </tr>
                     @forelse($data as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
-                            <td><a href="{{ route('backend.crosswords_counts.show',['id'=>$item->crosswordsCounts['id']]) }}">{{ $item->crosswordsCounts['id'] }}</a></td>
-                            <td>{{ $item->word }}</td>
-                            <td title="{{ $item->tip }}">{{ mb_substr($item->tip,0,20,'utf-8') }}</td>
-                            <td>{{ $item->is_h }}</td>
-                            <td>{{ $item->seq }}</td>
+                            <td class="text-truncate">{{ $item->title }}</td>
+                            <td>{{ $item->author }}</td>
+                            <td>{{ $item->book }}</td>
                             <td>{{ $item->created_at }}</td>
                             <td>
-                                <a href="{{ route('backend.crosswords.show',['id'=>$item->id]) }}">显示</a>
-                                <a href="{{ route('backend.crosswords.edit',['id'=>$item->id]) }}">编辑</a>
+                                <a href="{{ route('backend.sentences.edit',['id'=>$item->id]) }}">编辑</a>
                                 <a onclick="confirm_del({{ $item->id }})">删除</a>
                             </td>
                         </tr>
                         @empty
-                        <tr class="text-center"><td colspan="8">没有数据</td></tr>
+                        <tr class="text-center"><td colspan="5">没有数据</td></tr>
                     @endforelse
                 </table>
                 <div class="panel-footer text-center" style="padding: 0">
@@ -50,7 +45,7 @@
 
 @foreach($data as $item)
 <div class="modal fade" id="model-del-crosswords{{ $item->id }}" tabindex="-1" role="dialog">
-    <form action="{{ route('backend.crosswords.destroy',['id'=>$item->id]) }}" method="post">
+    <form action="{{ route('backend.sentences.destroy',['id'=>$item->id]) }}" method="post">
         {{ csrf_field() }}
         {{ method_field('DELETE') }}
     <div class="modal-dialog" role="document">

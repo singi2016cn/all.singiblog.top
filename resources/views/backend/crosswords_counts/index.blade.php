@@ -36,7 +36,7 @@
                     @endforelse
                 </table>
                 <div class="panel-footer text-center" style="padding: 0">
-                    {{ $data->render() }}
+                    {{ $data->links() }}
                 </div>
             </div>
         </div>

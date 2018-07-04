@@ -12,6 +12,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <style>
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
     @yield('style')
 </head>
 <body>
@@ -41,6 +48,7 @@
                             <li class="@if(request()->is('backend')) active @endif"><a href="{{route('backend')}}">首页</a></li>
                             <li class="@if(request()->is('crosswords_counts*')) active @endif"><a href="{{route('backend.crosswords_counts.index')}}">填字游戏号数</a></li>
                             <li class="@if(request()->is('crosswords*')) active @endif"><a href="{{route('backend.crosswords.index')}}">填字游戏</a></li>
+                            <li class="@if(request()->is('sentences*')) active @endif"><a href="{{route('backend.sentences.index')}}">句心</a></li>
                         @endif
                     </ul>
 
