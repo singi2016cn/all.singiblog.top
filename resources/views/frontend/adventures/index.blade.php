@@ -70,7 +70,7 @@
                 <div class="panel-body">
                     <div class="progress">
                         <div class="progress-bar progress-bar-primary progress-bar-striped" :style="'width: '+enemy_exp_percentage+'%'">
-                            <span>@{{ enemy.properties.exp }}/@{{ enemy.properties.exp }}</span>
+                            <span>@{{ enemy.exp }}/@{{ enemy.properties.exp }}</span>
                         </div>
                     </div>
                     <div class="progress">
@@ -140,10 +140,10 @@
                 ],
                 des : [],
                 place : [
-                    {'name':'初始之镇','description':'玩家游戏开始的地方','damage':1},
+                    {'name':'起始之镇','description':'玩家游戏开始的地方','damage':1},
                     {'name':'荒漠平原','description':'一片荒凉的土地，马贼纵横','damage':10},
                 ],
-                place_select_obj : {'name':'初始之镇','description':'玩家游戏开始的地方','damage':1},
+                place_select_obj : {'name':'起始之镇','description':'玩家游戏开始的地方','damage':1},
                 player: {
                     hp : 20,
                     damage : 0,
@@ -467,6 +467,15 @@
             app.enemy.hp = app.enemy.properties.hp = randomNum(1,app.player.properties.hp+10);
             app.enemy.properties.attack = randomNum(1,app.player.properties.attack+5);
             app.enemy.properties.defend = randomNum(1,app.player.properties.defend+5);
+            app.enemy.phyle = {'name':'人类','description':'最常见的种族，各项能力都比较均衡','hp':10,'attack':5,'defend':5};
+            app.enemy.abilities = [
+                {'name': '战意','description':'本能,伤害+[1,2]倍','type':2,'damage':[30,40]},
+                {'name': '妖术','description':'一种妖术,伤害+[80,90]','type':1,'damage':[80,90]},
+            ];
+            app.enemy.equipments = [
+                {'name': '短剑','type':1,'description':'普通的武器,攻击+[1,3]','attack':[1,3],'defend':[0,0]},
+                {'name': '布甲','type':2,'description':'普通的防具,防御+[1,3]','attack':[0,0],'defend':[1,3]}
+            ];
         }
         //生成从[min,max]的随机数
         function randomNum(min, max) {
