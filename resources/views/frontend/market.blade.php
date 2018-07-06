@@ -28,7 +28,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">句心</div>
                     <div class="panel-body">
-                        一句话，一颗心，让句子震撼你的心里。
+                        让句子震撼你的心灵。
                     </div>
                 </div>
             </div>
