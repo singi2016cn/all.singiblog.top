@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('description')让句子震撼你的心灵@endsection
+@section('keywords')句子,名句,思考@endsection
+@section('title')句心@endsection
+
 @section('style')
     <style>
         .bl{border-left: none;}

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('description')提供各种资源的下载@endsection
+@section('keywords')资源,图书,游戏,电影,动漫,电视剧,软件,小说@endsection
+@section('title')SN商店@endsection
+
 @section('style')
     <style>
         .tddd {

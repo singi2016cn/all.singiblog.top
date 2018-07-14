@@ -5,9 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <meta name="description" content="@section('description')创造一个全新的世界@show">
-    <meta name="keywords" content="@section('keywords')填字游戏,泰句心的冒险@show">
     <meta name="author" content="https://github.com/singi2016cn">
+    <meta name="description" content="@section('description')创造一个全新的世界@show">
+    <meta name="keywords" content="@section('keywords')SN商店,句心,泰句心的冒险,填字游戏@show">
     <title>@section('title'){{ config('app.name', 'Laravel') }}@show</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('link')

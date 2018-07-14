@@ -5,6 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
+        <meta name="author" content="https://github.com/singi2016cn">
+        <meta name="description" content="开启新世界的大门">
+        <meta name="keywords" content="SN商店,句心,泰句心的冒险,填字游戏">
         <title>all of singi</title>
 
         <!-- Fonts -->

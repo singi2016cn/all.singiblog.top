@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('description')填字游戏@endsection
+@section('keywords')填字游戏@endsection
+@section('title')填字游戏@endsection
+
 @section('content')
 <div class="container">
     <div class="row">
