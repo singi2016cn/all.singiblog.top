@@ -30,7 +30,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    </button>
+                    </button>˚
                     <a class="navbar-brand" href="{{ url('/') }}">
                         {{ config('app.name', 'Laravel') }}
                     </a>
@@ -39,6 +39,7 @@
                     <ul class="nav navbar-nav">
                         <li class="@if(request()->is('market*')) active @endif"><a href="{{route('market.index')}}">广场</a></li>
                         <li class="@if(request()->is('crosswords*')) active @endif"><a href="{{route('crosswords.index')}}">填字游戏</a></li>
+                        <li class="@if(request()->is('adventures*')) active @endif"><a href="{{route('adventures.index')}}">泰句心的冒险</a></li>
                         <li class="@if(request()->is('sentences*')) active @endif"><a href="{{route('sentences.index')}}">句心</a></li>
                         <li class="@if(request()->is('resources*')) active @endif"><a  href="{{route('resources.index')}}">SN商店</a></li>
                     </ul>
@@ -71,6 +72,20 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        (function(){
+            var bp = document.createElement('script');
+            var curProtocol = window.location.protocol.split(':')[0];
+            if (curProtocol === 'https') {
+                bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+            }
+            else {
+                bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+            }
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(bp, s);
+        })();
+    </script>
     @yield('script_src')
     @yield('script')
 </body>
