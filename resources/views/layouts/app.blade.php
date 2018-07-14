@@ -11,6 +11,13 @@
     <title>@section('title'){{ config('app.name', 'Laravel') }}@show</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('link')
+    <style>
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
     @yield('style')
 </head>
 <body>
@@ -30,9 +37,10 @@
                 </div>
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="{{route('market.index')}}">广场</a></li>
-                        <li><a href="{{route('crosswords.index')}}">填字游戏</a></li>
-                        <li><a href="{{route('sentences.index')}}">句心</a></li>
+                        <li class="@if(request()->is('market*')) active @endif"><a href="{{route('market.index')}}">广场</a></li>
+                        <li class="@if(request()->is('crosswords*')) active @endif"><a href="{{route('crosswords.index')}}">填字游戏</a></li>
+                        <li class="@if(request()->is('sentences*')) active @endif"><a href="{{route('sentences.index')}}">句心</a></li>
+                        <li class="@if(request()->is('resources*')) active @endif"><a  href="{{route('resources.index')}}">SN商店</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @guest

@@ -27,6 +27,8 @@ Route::Resource('adventures','Frontend\AdventuresController');
 
 Route::Resource('sentences','Frontend\SentencesController');
 
+Route::Resource('resources','Frontend\ResourcesController');
+
 Route::get('/backend','BackendController@index')->name('backend');
 Route::prefix('backend')->name('backend.')->group(function () {
     Route::get('login','Backend\LoginController@showLoginForm')->name('showLoginForm');
@@ -38,6 +40,8 @@ Route::prefix('backend')->name('backend.')->group(function () {
     Route::Resource('crosswords_counts','Backend\CrosswordsCountsController');
 
     Route::Resource('sentences','Backend\SentencesController');
+
+    Route::Resource('resources','Backend\ResourcesController');
 });
 
 Route::Resource('market','Frontend\MarketController');

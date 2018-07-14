@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sentences extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     function getTagAttribute($value){
         return explode(',',$value);

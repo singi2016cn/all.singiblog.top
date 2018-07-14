@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CrosswordsCounts extends Model
 {
-    protected $guarded = [];
+    protected $guarded = ['id'];
 
     public function crosswords(){
         return $this->hasMany(Crosswords::class,'crosswords_counts_id','id');
