@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="author" content="https://github.com/singi2016cn">
     <meta name="description" content="@section('description')创造一个全新的世界@show">
-    <meta name="keywords" content="@section('keywords')SN商店,句心,泰句心的冒险,填字游戏@show">
+    <meta name="keywords" content="@section('keywords')SG商店,句心,泰句心的冒险,填字游戏@show">
     <title>@section('title'){{ config('app.name', 'Laravel') }}@show</title>
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('link')
@@ -41,7 +41,7 @@
                         <li class="@if(request()->is('crosswords*')) active @endif"><a href="{{route('crosswords.index')}}">填字游戏</a></li>
                         <li class="@if(request()->is('adventures*')) active @endif"><a href="{{route('adventures.index')}}">泰句心的冒险</a></li>
                         <li class="@if(request()->is('sentences*')) active @endif"><a href="{{route('sentences.index')}}">句心</a></li>
-                        <li class="@if(request()->is('resources*')) active @endif"><a  href="{{route('resources.index')}}">SN商店</a></li>
+                        <li class="@if(request()->is('resources*')) active @endif"><a  href="{{route('resources.index')}}">SG商店</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @guest

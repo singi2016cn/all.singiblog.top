@@ -49,7 +49,7 @@
                             <li class="@if(request()->is('crosswords_counts*')) active @endif"><a href="{{route('backend.crosswords_counts.index')}}">填字游戏号数</a></li>
                             <li class="@if(request()->is('crosswords*')) active @endif"><a href="{{route('backend.crosswords.index')}}">填字游戏</a></li>
                             <li class="@if(request()->is('sentences*')) active @endif"><a href="{{route('backend.sentences.index')}}">句心</a></li>
-                            <li class="@if(request()->is('resources*')) active @endif"><a href="{{route('backend.resources.index')}}">SN商店</a></li>
+                            <li class="@if(request()->is('resources*')) active @endif"><a href="{{route('backend.resources.index')}}">SG商店</a></li>
                         @endif
                     </ul>
 
