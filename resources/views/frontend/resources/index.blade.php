@@ -103,7 +103,7 @@
                 </div>
             </div>
             <div class="row text-center">
-                {{ $data->links() }}
+                {{ $data->appends(['type'=>$type,'is_free'=>$is_free,'search' => $search])->links() }}
             </div>
         </div>
     </div>
