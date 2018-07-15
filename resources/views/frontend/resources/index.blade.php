@@ -107,6 +107,32 @@
             </div>
         </div>
     </div>
+    @section('abs_bar')
+        <button data-toggle="modal" data-target="#weixin_model" type="button" class="btn btn-default"><i class="fa fa-weixin"></i></button>
+    @endsection
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="weixin_model">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">SG资源商店微信订阅号</h4>
+          </div>
+          <div class="modal-body">
+              <div class="row">
+                  <div class="col-sm-6">
+                      <img src="{{ asset('imgs/qrcode_singistore.jpg') }}" alt="SG资源商店微信订阅号">
+                  </div>
+                  <div class="col-sm-6" style="margin-top: 20px">
+                      <p>欢迎关注</p>
+                      <p>SG资源商店微信订阅号</p>
+                      <p>更多资源等你来拿</p>
+                  </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
 @endsection
 
 @section('script')

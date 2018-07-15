@@ -10,6 +10,7 @@
     <meta name="keywords" content="@section('keywords')SG资源商店,句心,泰句心的冒险,填字游戏@show">
     <title>@section('title'){{ config('app.name', 'Laravel') }}@show</title>
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     @yield('link')
     <style>
         .text-truncate {
@@ -70,6 +71,12 @@
             </div>
         </nav>
         @yield('content')
+        <div style="position: absolute;bottom: 20px;right: 20px">
+            <div class="btn-group-vertical" role="group">
+                @section('abs_bar') @show
+                <a href="#" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a>
+            </div>
+        </div>
     </div>
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
