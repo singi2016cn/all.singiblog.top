@@ -109,6 +109,7 @@
     </div>
     @section('abs_bar')
         <button data-toggle="modal" data-target="#weixin_model" type="button" class="btn btn-default"><i class="fa fa-weixin"></i></button>
+        <button data-toggle="modal" data-target="#nansuo_model" type="button" class="btn btn-default"><i class="fa fa-shopping-cart"></i></button>
     @endsection
 
     <div class="modal fade" tabindex="-1" role="dialog" id="weixin_model">
@@ -121,7 +122,7 @@
           <div class="modal-body">
               <div class="row">
                   <div class="col-sm-6">
-                      <img src="{{ asset('imgs/qrcode_singistore.jpg') }}" alt="SG资源商店微信订阅号">
+                      <img src="{{ asset('imgs/qrcode_singistore.jpg') }}" width="200px" alt="SG资源商店微信订阅号">
                   </div>
                   <div class="col-sm-6" style="margin-top: 20px">
                       <p>欢迎关注</p>
@@ -129,10 +130,42 @@
                       <p>更多资源等你来拿</p>
                   </div>
               </div>
+              <div class="row">
+                  <div class="col-sm-6">
+                      <img src="{{ asset('imgs/qrcode_nansuostudio.png') }}" style="width: 180px;margin-left: 10px" alt="南锁工作室淘宝店">
+                  </div>
+                  <div class="col-sm-6" style="margin-top: 20px">
+                      <p>欢迎访问</p>
+                      <p>南锁工作室淘宝店</p>
+                      <p>更多优惠等你来拿</p>
+                  </div>
+              </div>
           </div>
         </div>
       </div>
     </div>
+<div class="modal fade" tabindex="-1" role="dialog" id="nansuo_model">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">南锁工作室淘宝店</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <img src="{{ asset('imgs/qrcode_nansuostudio.png') }}" style="width: 180px;margin-left: 10px" alt="南锁工作室淘宝店">
+                    </div>
+                    <div class="col-sm-6" style="margin-top: 20px">
+                        <p>欢迎访问</p>
+                        <p>南锁工作室淘宝店</p>
+                        <p>更多优惠等你来拿</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('script')
