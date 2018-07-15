@@ -6,6 +6,7 @@ use App\Model\Resources;
 use App\Http\Controllers\Frontend\ResourcesController as Rc;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 
 class ResourcesController extends Controller
 {
@@ -38,11 +39,19 @@ class ResourcesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'name'=>'required|string:255',
+            'name'=>'required|string:255|unique:resources',
             'type'=>'required',
             'download_link'=>'required|string:255',
         ]);
         $request_data = $request->except('_token');
+        $validator = Validator::make($request->only('download_link'), [
+            'download_link' => 'required|url',
+        ]);
+        if ($validator->fails()){
+            $download_link_arr = explode(' ',$request_data['download_link']);
+            if ($download_link_arr[1]) $request_data['download_link'] = $download_link_arr[1];
+            if ($download_link_arr[3]) $request_data['download_password'] = $download_link_arr[3];
+        }
         Resources::firstOrCreate($request_data);
         return back()->with('status', 'create success');
     }

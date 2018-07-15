@@ -35,7 +35,7 @@
 
                             <div class="form-group">
                                 <label for="download_link">下载链接</label>
-                                <input type="text" class="form-control" id="download_link" name="download_link" placeholder="下载链接">
+                                <input type="text" class="form-control" id="download_link" name="download_link" placeholder="下载链接[以及密码]">
                             </div>
 
                             <div class="form-group">

@@ -59,12 +59,11 @@
                     </div>
                 </div>
 
-
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         资源列表
                     </div>
-                    <table class="table">
+                    <table class="table table-striped table-hover">
                         <tr>
                             <th>ID</th>
                             <th>名称</th>
