@@ -27,7 +27,7 @@
                     </div>
                     <div class="panel-body">
                         <form class="form-horizontal" method="get" action="{{ route('resources.index') }}">
-                            {{--<div class="form-group">
+                            <div class="form-group">
                                 <label class="col-sm-2 control-label">类型</label>
                                 <div class="col-sm-8">
                                     <div class="btn-group" role="group">
@@ -48,7 +48,7 @@
                                         <a href="{{ route('resources.index',['type'=>$type,'is_free'=>2,'search'=>$search])}}" type="button" class="btn btn-default @if($is_free == 2) active @endif">否</a>
                                     </div>
                                 </div>
-                            </div>--}}
+                            </div>
                             <div class="form-group">
                                 <label for="search" class="col-sm-2 control-label">搜索</label>
                                 <div class="col-sm-8">

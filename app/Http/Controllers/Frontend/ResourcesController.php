@@ -15,6 +15,8 @@ class ResourcesController extends Controller
         4 => '电视剧',
         5 => '动漫',
         6 => '软件',
+        7 => '小说',
+        8 => '系统',
     ];
 
     public static $is_free_setting = [
@@ -37,7 +39,7 @@ class ResourcesController extends Controller
         if ($type) $resources_object->where('type',$type);
         $is_free = $request->input('is_free');
         if ($is_free) $resources_object->where('is_free',$is_free);
-        $data = $resources_object->paginate(15);
+        $data = $resources_object->paginate(10);
         return view('frontend/resources/index',['data'=>$data,'type_setting'=>self::$type_setting,'is_free_setting'=>self::$is_free_setting,'search'=>$search,'type'=>$type,'is_free'=>$is_free]);
     }
 

@@ -17,7 +17,7 @@ class ResourcesController extends Controller
      */
     public function index()
     {
-        return view('backend.resources.index',['data'=>Resources::orderBy('id','desc')->paginate(10),'type_setting'=>Rc::$type_setting,'is_free_setting'=>Rc::$is_free_setting]);
+        return view('backend.resources.index',['data'=>Resources::orderBy('id','desc')->paginate(15),'type_setting'=>Rc::$type_setting,'is_free_setting'=>Rc::$is_free_setting]);
     }
 
     /**
