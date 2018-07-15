@@ -80,10 +80,10 @@
                                 {{ $type_setting[$item->type] }}
                             </td>
                             <td>{{ $is_free_setting[$item->is_free] }}</td>
-                            <td>{{ $item->download_count }}</td>
+                            <td id="download_count_td{{ $item->id }}">{{ $item->download_count }}</td>
                             <td>
                                 @if($item->is_free == 1)
-                                    <a href="{{ $item->download_link }}" target="_blank">下载</a>
+                                    <a href="{{ $item->download_link }}" onclick="update_download_count({{$item->id}})" target="_blank">下载</a>
                                     @isset($item->download_password)
                                         <span class="label label-success" title="下载密码">{{ $item->download_password }}</span>
                                     @endisset
@@ -116,6 +116,22 @@
             el: '#app',
             data: {},
         });
+
+        function update_download_count(id){
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: '{{ route('api.resources.update_resources') }}',
+                data: {id:id},
+                success: function(res){
+                    console.log(res);
+                    $('#download_count_td'+id).text($('#download_count_td'+id).text()*1+1);
+                },
+                dataType: 'json'
+            });
+        }
 
     </script>
 @endsection

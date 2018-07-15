@@ -47,5 +47,10 @@ Route::prefix('backend')->name('backend.')->group(function () {
 Route::Resource('market','Frontend\MarketController');
 
 
-Route::post('crosswords/get_crosswords','Api\CrosswordsController@get_crosswords')->name('api.crosswords.get_crosswords');
-Route::post('crosswords/del_crosswords','Api\CrosswordsController@del_crosswords')->name('api.crosswords.del_crosswords');
+Route::prefix('/api')->name('api.')->group(function () {
+    Route::post('crosswords/get_crosswords','Api\CrosswordsController@get_crosswords')->name('crosswords.get_crosswords');
+    Route::post('crosswords/del_crosswords','Api\CrosswordsController@del_crosswords')->name('crosswords.del_crosswords');
+
+    Route::post('resources/update_resources','Api\ResourcesController@update_resources')->name('resources.update_resources');
+});
+
