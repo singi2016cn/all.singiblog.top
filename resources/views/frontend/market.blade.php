@@ -8,7 +8,7 @@
         <a href="{{ route('resources.index') }}">
             <div class="col-md-3">
                 <div class="panel panel-default">
-                    <div class="panel-heading">SG商店</div>
+                    <div class="panel-heading">SG资源商店</div>
                     <div class="panel-body">
                         各种各样的资源在等着你。
                     </div>

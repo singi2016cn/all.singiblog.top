@@ -2,7 +2,7 @@
 
 @section('description')提供各种资源的下载@endsection
 @section('keywords')资源,图书,游戏,电影,动漫,电视剧,软件,小说@endsection
-@section('title')SG商店@endsection
+@section('title')SG资源商店@endsection
 
 @section('style')
     <style>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="panel-body">
                         <form class="form-horizontal" method="get" action="{{ route('resources.index') }}">
-                            <div class="form-group">
+                            {{--<div class="form-group">
                                 <label class="col-sm-2 control-label">类型</label>
                                 <div class="col-sm-8">
                                     <div class="btn-group" role="group">
@@ -48,7 +48,7 @@
                                         <a href="{{ route('resources.index',['type'=>$type,'is_free'=>2,'search'=>$search])}}" type="button" class="btn btn-default @if($is_free == 2) active @endif">否</a>
                                     </div>
                                 </div>
-                            </div>
+                            </div>--}}
                             <div class="form-group">
                                 <label for="search" class="col-sm-2 control-label">搜索</label>
                                 <div class="col-sm-8">
@@ -59,7 +59,7 @@
                     </div>
                 </div>
 
-                @forelse($data as $item)
+
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         资源列表
@@ -73,6 +73,7 @@
                             <th>下载次数</th>
                             <th>操作</th>
                         </tr>
+                        @forelse($data as $item)
                         <tr>
                             <td>{{ $item->id }}</td>
                             <td>{{ $item->name }}</td>
@@ -83,7 +84,7 @@
                             <td>{{ $item->download_count }}</td>
                             <td>
                                 @if($item->is_free == 1)
-                                    <a href="{{ $item->download_link }}">下载</a>
+                                    <a href="{{ $item->download_link }}" target="_blank">下载</a>
                                     @isset($item->download_password)
                                         <span class="label label-success" title="下载密码">{{ $item->download_password }}</span>
                                     @endisset
@@ -92,13 +93,15 @@
                                 @endif
                             </td>
                         </tr>
+                        @empty
+                            <tr class="text-center">
+                                <td colspan="6">
+                                    哦，没有搜索到任何商品，试试别的搜索条件吧
+                                </td>
+                            </tr>
+                        @endforelse
                     </table>
                 </div>
-                @empty
-                    <div class="text-center">
-                        <a href="{{route('market.index')}}">哦，这里还没有任何商品，请去别处逛逛吧</a>
-                    </div>
-                @endforelse
             </div>
             <div class="row text-center">
                 {{ $data->links() }}

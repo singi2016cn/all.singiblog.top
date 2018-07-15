@@ -7,7 +7,7 @@
             @component('component.alert') success @endcomponent
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    填字游戏
+                    SG资源商店
                     <a style="float: right" href="{{ route('backend.resources.create') }}">创建</a>
                 </div>
                 <table class="table table-striped table-hover">
