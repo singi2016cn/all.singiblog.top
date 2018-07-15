@@ -37,7 +37,7 @@ class ResourcesController extends Controller
         if ($type) $resources_object->where('type',$type);
         $is_free = $request->input('is_free');
         if ($is_free) $resources_object->where('is_free',$is_free);
-        $data = $resources_object->paginate(10);
+        $data = $resources_object->paginate(15);
         return view('frontend/resources/index',['data'=>$data,'type_setting'=>self::$type_setting,'is_free_setting'=>self::$is_free_setting,'search'=>$search,'type'=>$type,'is_free'=>$is_free]);
     }
 

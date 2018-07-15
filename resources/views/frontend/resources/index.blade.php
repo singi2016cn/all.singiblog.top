@@ -130,16 +130,6 @@
                       <p>更多资源等你来拿</p>
                   </div>
               </div>
-              <div class="row">
-                  <div class="col-sm-6">
-                      <img src="{{ asset('imgs/qrcode_nansuostudio.png') }}" style="width: 180px;margin-left: 10px" alt="南锁工作室淘宝店">
-                  </div>
-                  <div class="col-sm-6" style="margin-top: 20px">
-                      <p>欢迎访问</p>
-                      <p>南锁工作室淘宝店</p>
-                      <p>更多优惠等你来拿</p>
-                  </div>
-              </div>
           </div>
         </div>
       </div>

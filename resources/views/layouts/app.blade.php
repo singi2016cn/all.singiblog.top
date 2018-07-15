@@ -71,7 +71,7 @@
             </div>
         </nav>
         @yield('content')
-        <div style="position: absolute;bottom: 20px;right: 20px">
+        <div style="position: fixed;bottom: 20px;right: 20px">
             <div class="btn-group-vertical" role="group">
                 @section('abs_bar') @show
                 <a href="#" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a>
