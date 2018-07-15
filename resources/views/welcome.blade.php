@@ -81,7 +81,7 @@
                     @auth('admin')
                         <a href="{{ route('backend') }}">Backend-home</a>
                     @else
-                        <a href="{{ route('backend.login') }}">Backend-login</a>
+                        <a href="{{ route('backend.login') }}">Backend</a>
                     @endauth
                 </div>
             @endif
@@ -92,7 +92,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="{{ route('market.index') }}">开启新世界的大门</a>
+                    <a href="{{ route('market.index') }}" style="font-size: 2em">开启新世界的大门</a>
                 </div>
             </div>
         </div>
