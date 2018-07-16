@@ -12,13 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('market.index');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/home/crosswords', 'HomeController@crosswords')->name('home.crosswords');
+
+Route::Resource('market','Frontend\MarketController');
 
 Route::Resource('crosswords','Frontend\CrosswordsController');
 Route::post('crosswords/check','Frontend\CrosswordsController@check')->name('crosswords.check');
@@ -28,6 +30,8 @@ Route::Resource('adventures','Frontend\AdventuresController');
 Route::Resource('sentences','Frontend\SentencesController');
 
 Route::Resource('resources','Frontend\ResourcesController');
+
+Route::Resource('feedbacks','Frontend\FeedbacksController');
 
 Route::get('/backend','BackendController@index')->name('backend');
 Route::prefix('backend')->name('backend.')->group(function () {
@@ -43,9 +47,6 @@ Route::prefix('backend')->name('backend.')->group(function () {
 
     Route::Resource('resources','Backend\ResourcesController');
 });
-
-Route::Resource('market','Frontend\MarketController');
-
 
 Route::prefix('/api')->name('api.')->group(function () {
     Route::post('crosswords/get_crosswords','Api\CrosswordsController@get_crosswords')->name('crosswords.get_crosswords');

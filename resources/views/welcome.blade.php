@@ -4,16 +4,12 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <link href="{{ asset('favicon.ico') }}" rel="Shortcut Icon">
         <meta name="author" content="https://github.com/singi2016cn">
         <meta name="description" content="开启新世界的大门">
         <meta name="keywords" content="SG资源商店,句心,泰句心的冒险,填字游戏">
         <title>all of singi</title>
-
-        <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-
-        <!-- Styles -->
         <style>
             html, body {
                 background-color: #fff;
