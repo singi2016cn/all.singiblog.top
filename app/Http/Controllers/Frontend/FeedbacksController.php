@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Mail\FeedbacksMail;
 use App\Model\Feedbacks;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
 
 class FeedbacksController extends Controller
 {
@@ -49,7 +51,8 @@ class FeedbacksController extends Controller
         } else{
             $request_data['type'] = 3;
         }
-        Feedbacks::firstOrCreate($request_data);
+        $Feedbacks = Feedbacks::firstOrCreate($request_data);
+        Mail::to('787575327@qq.com')->later(now()->addMinutes(1),new FeedbacksMail($Feedbacks));
         return back()->with('status', '感谢您的反馈，我们会尽快做出响应！');
     }
 
