@@ -76,35 +76,59 @@
             <div class="btn-group-vertical" role="group">
                 @section('abs_bar') @show
                 <button data-toggle="modal" data-target="#feedback" type="button" class="btn btn-default"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></button>
+                <button data-toggle="modal" data-target="#donate" type="button" class="btn btn-default"><span class="fa fa-thumbs-o-up" aria-hidden="true"></span></button>
                 <a href="#" type="button" class="btn btn-default"><span class="glyphicon glyphicon-menu-up" aria-hidden="true"></span></a>
             </div>
         </div>
     </div>
 
+    <div class="modal fade" tabindex="-1" role="dialog" id="donate">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content modal-lg">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">给我鼓励，您的支持将出现在捐赠列表中</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <img class="img-rounded img-responsive" src="{{ asset('imgs/alipay.png') }}" alt="支付宝">
+                        </div>
+                        <div class="col-sm-4">
+                            <img class="img-rounded img-responsive" src="{{ asset('imgs/wechatpay.png') }}" alt="支付宝">
+                        </div>
+                        <div class="col-sm-4">
+                            <img class="img-rounded img-responsive" src="{{ asset('imgs/alipay_package.jpeg') }}" alt="支付宝">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" tabindex="-1" role="dialog" id="feedback">
         <div class="modal-dialog" role="document">
             <form action="{{ route('feedbacks.store') }}" method="post">
                 {{ csrf_field() }}
-            <div class="modal-content modal-lg">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="exampleModalLabel">轮到你表演的时候了，帮助我们做得更好</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <label for="message-text" class="control-label">反馈建议</label>
-                        <textarea class="form-control" rows="10" id="message-text" required name="content" placeholder="反馈建议，想找的资源，希望本站新增功能..."></textarea>
+                <div class="modal-content modal-lg">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">轮到你表演的时候了，帮助我们做得更好</h4>
                     </div>
-                    <div class="form-group">
-                        <label for="recipient-name" class="control-label">联系方式</label>
-                        <input type="text" class="form-control" id="recipient-name" name="contact" placeholder="邮箱/手机号/QQ/微信/微博...">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="message-text" class="control-label">反馈建议</label>
+                            <textarea class="form-control" rows="10" id="message-text" required name="content" placeholder="反馈建议，想找的资源，希望本站新增功能..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="recipient-name" class="control-label">联系方式</label>
+                            <input type="text" class="form-control" id="recipient-name" name="contact" placeholder="邮箱/手机号/QQ/微信/微博...">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">再想想</button>
+                        <button type="submit" class="btn btn-primary">火速上报</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">再想想</button>
-                    <button type="submit" class="btn btn-primary">火速上报</button>
-                </div>
-            </div>
             </form>
         </div>
     </div>

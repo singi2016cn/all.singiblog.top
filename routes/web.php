@@ -33,6 +33,8 @@ Route::Resource('resources','Frontend\ResourcesController');
 
 Route::Resource('feedbacks','Frontend\FeedbacksController');
 
+Route::Resource('demands','Frontend\DemandsController');
+
 Route::get('/backend','BackendController@index')->name('backend');
 Route::prefix('backend')->name('backend.')->group(function () {
     Route::get('login','Backend\LoginController@showLoginForm')->name('showLoginForm');
