@@ -41,7 +41,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-2 control-label">是否免费</label>
+                                <label class="col-sm-2 control-label">平台</label>
                                 <div class="col-sm-8">
                                     <div class="btn-group" role="group">
                                         <a href="{{ route('demands.index',['type'=>$type,'platform'=>'','search'=>$search])}}"  type="button" class="btn btn-default @if($platform == '') active @endif">不限</a>
