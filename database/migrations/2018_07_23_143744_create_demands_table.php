@@ -15,6 +15,11 @@ class CreateDemandsTable extends Migration
     {
         Schema::create('demands', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name',255)->comment('名称');
+            $table->text('description')->comment('描述');
+            $table->unsignedTinyInteger('type')->comment('类型');
+            $table->unsignedTinyInteger('platform')->comment('所属平台');
+            $table->text('websites')->comment('已实现网址');
             $table->timestamps();
         });
     }

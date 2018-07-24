@@ -13,14 +13,17 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <div class="col-md-3">
-            <div class="panel panel-success">
-                <div class="panel-heading">xx(即将开放)</div>
-                <div class="panel-body">
-                    改变世界从一个小小的需求开始
+        <a href="{{ route('demands.index') }}">
+            <div class="col-md-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">程需</div>
+                    <div class="panel-body">
+                        改变世界从一个小小的需求开始
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
+
         {{--<div class="col-md-3">
             <div class="panel panel-success">
                 <div class="panel-heading">数据酷(即将开放)</div>

@@ -55,5 +55,6 @@ Route::prefix('/api')->name('api.')->group(function () {
     Route::post('crosswords/del_crosswords','Api\CrosswordsController@del_crosswords')->name('crosswords.del_crosswords');
 
     Route::post('resources/update_resources','Api\ResourcesController@update_resources')->name('resources.update_resources');
+    Route::post('demands/find','Api\DemandsController@find')->name('demands.find');
 });
 

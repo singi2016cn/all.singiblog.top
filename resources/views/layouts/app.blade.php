@@ -43,6 +43,7 @@
                         <li class="@if(request()->is('resources*')) active @endif">
                             <a  href="{{route('resources.index')}}">SG资源商店<span class="glyphicon glyphicon-star text-danger"></span></a>
                         </li>
+                        <li class="@if(request()->is('demands*')) active @endif"><a href="{{route('demands.index')}}">程需</a></li>
                         <li class="@if(request()->is('crosswords*')) active @endif"><a href="{{route('crosswords.index')}}">填字游戏</a></li>
                         <li class="@if(request()->is('adventures*')) active @endif"><a href="{{route('adventures.index')}}">泰句心的冒险</a></li>
                         <li class="@if(request()->is('sentences*')) active @endif"><a href="{{route('sentences.index')}}">句心</a></li>
