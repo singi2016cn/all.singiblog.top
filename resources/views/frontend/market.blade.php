@@ -13,17 +13,6 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <a href="{{ route('demands.index') }}">
-            <div class="col-md-3">
-                <div class="panel panel-success">
-                    <div class="panel-heading">程需</div>
-                    <div class="panel-body">
-                        改变世界从一个小小的需求开始
-                    </div>
-                </div>
-            </div>
-        </a>
-
         {{--<div class="col-md-3">
             <div class="panel panel-success">
                 <div class="panel-heading">数据酷(即将开放)</div>
@@ -38,6 +27,16 @@
                     <div class="panel-heading">SG资源商店</div>
                     <div class="panel-body">
                         各种各样的资源在等着你。
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a href="{{ route('demands.index') }}">
+            <div class="col-md-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">程需</div>
+                    <div class="panel-body">
+                        改变世界从一个小小的需求开始
                     </div>
                 </div>
             </div>
