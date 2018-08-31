@@ -41,6 +41,16 @@
                 </div>
             </div>
         </a>
+        <a href="{{ route('tagclouds.index') }}">
+            <div class="col-md-3">
+                <div class="panel panel-info">
+                    <div class="panel-heading">词云</div>
+                    <div class="panel-body">
+                        是时候展示数据之美了
+                    </div>
+                </div>
+            </div>
+        </a>
         <a href="{{ route('sentences.index') }}">
             <div class="col-md-3">
                 <div class="panel panel-default">

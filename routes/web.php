@@ -25,6 +25,8 @@ Route::Resource('market','Frontend\MarketController');
 Route::Resource('crosswords','Frontend\CrosswordsController');
 Route::post('crosswords/check','Frontend\CrosswordsController@check')->name('crosswords.check');
 
+Route::Resource('tagclouds','Frontend\TagCloudsController');
+
 Route::Resource('adventures','Frontend\AdventuresController');
 
 Route::Resource('sentences','Frontend\SentencesController');

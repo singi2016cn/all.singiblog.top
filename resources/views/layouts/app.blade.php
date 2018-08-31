@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('share.js/css/share.min.css') }}">
     @yield('link')
     <style>
         .text-truncate {
@@ -43,6 +44,7 @@
                         <li class="@if(request()->is('resources*')) active @endif">
                             <a  href="{{route('resources.index')}}">SG资源商店<span class="glyphicon glyphicon-star text-danger"></span></a>
                         </li>
+                        <li class="@if(request()->is('tagclouds*')) active @endif"><a href="{{route('tagclouds.index')}}">词云</a></li>
                         <li class="@if(request()->is('demands*')) active @endif"><a href="{{route('demands.index')}}">程需</a></li>
                         <li class="@if(request()->is('crosswords*')) active @endif"><a href="{{route('crosswords.index')}}">填字游戏</a></li>
                         <li class="@if(request()->is('adventures*')) active @endif"><a href="{{route('adventures.index')}}">泰句心的冒险</a></li>
@@ -137,6 +139,7 @@
     <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="{{ asset('share.js/js/social-share.min.js') }}"></script>
     <script>
         (function(){
             var bp = document.createElement('script');
