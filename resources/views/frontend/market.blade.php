@@ -31,6 +31,16 @@
                 </div>
             </div>
         </a>
+        <a href="{{ url('images') }}">
+            <div class="col-md-3">
+                <div class="panel panel-success">
+                    <div class="panel-heading">图压</div>
+                    <div class="panel-body">
+                        缩小你的图片
+                    </div>
+                </div>
+            </div>
+        </a>
         <a href="{{ route('demands.index') }}">
             <div class="col-md-3">
                 <div class="panel panel-success">

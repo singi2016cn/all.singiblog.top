@@ -11,6 +11,9 @@
 |
 */
 
+use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Input;
+
 Route::get('/', function () {
     return redirect()->route('market.index');
 });
@@ -36,6 +39,14 @@ Route::Resource('resources','Frontend\ResourcesController');
 Route::Resource('feedbacks','Frontend\FeedbacksController');
 
 Route::Resource('demands','Frontend\DemandsController');
+
+Route::get('/images', function() {
+    return view('frontend/images_encode/index');
+});
+Route::post('/images', function()
+{
+    return Image::make(Input::file('file'))->response('',60);
+});
 
 Route::get('/backend','BackendController@index')->name('backend');
 Route::prefix('backend')->name('backend.')->group(function () {
